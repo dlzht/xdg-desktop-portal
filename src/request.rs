@@ -4,16 +4,13 @@ use std::fmt::Debug;
 use zbus::Connection;
 use zvariant::OwnedObjectPath;
 
-/// https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Request.xml
-
-pub struct Request {
+pub struct RequestPortal {
   connection: Connection,
   proxy: ZRequestProxy<'static>,
 }
 
-impl Request {
-  pub async fn new(handle_token: &str, connection: &Connection) -> Result<Self> {
-    let connection = connection.clone();
+impl RequestPortal {
+  pub async fn new(handle_token: &str, connection: Connection) -> Result<Self> {
     let name = connection
       .unique_name()
       .ok_or(Error::EmptyUniqueName)?
@@ -24,7 +21,7 @@ impl Request {
       .path(OwnedObjectPath::try_from(path)?)?
       .build()
       .await?;
-    Ok(Request { connection, proxy })
+    Ok(RequestPortal { connection, proxy })
   }
 
   pub async fn responses(&self) -> Result<ResponseStream> {

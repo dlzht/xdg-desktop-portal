@@ -5,8 +5,8 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 ### Features
 
 |                       | impl | example | version    | doc                                                                                                                                        | description                                                                                                                         |
-|-----------------------|----|---|------------|--------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
-| Account               | ❌ | ❌ | 1          | [Account.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Account.xml)      | query basic information about the user, like their name and avatar photo                                                            |
+|-----------------------|---|--|------------|--------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+| Account               | ✅ | ✅ | 1          | [Account.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Account.xml)      | query basic information about the user, like their name and avatar photo                                                            |
 | Background            | ❌ | ❌ | 2          | [Background.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Background.xml) | let application run in the background or started automatically when the user logs in                                                |
 | Camera                | ❌ | ❌ | -          | [Camera.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Camera.xml)        | access camera devices, such as web cams                                                                                             |
 | Clipboard             | ❌ | ❌ | -          | [Clipboard.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Clipboard.xml)  | access system clipboard                                                                                                             |
@@ -42,6 +42,21 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 ### Example
 
 #### 1. Account 
+
+__get_user_information__
+
+```rust
+#[tokio::main(flavor = "current_thread")]
+async fn main() {
+  let portal = Portal::new().await.unwrap();
+  let mut account_portal = portal.account().await.unwrap();
+  println!("{:?}", account_portal.get_user_information(None, Some("I want to get user info")).await);
+}
+
+// Ok(AccountUserInformation { id: "dlzht", name: "", image: "file:///home/dlzht/.face" })
+```
+![account_01](./image/account_01.jpg)
+
 #### 2. Background
 #### 3. Camera
 #### 4. Clipboard

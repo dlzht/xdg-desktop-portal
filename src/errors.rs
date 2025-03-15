@@ -7,6 +7,7 @@ pub enum Error {
   ZBus(zbus::Error),
   ZVariant(zvariant::Error),
   EmptyUniqueName,
+  RequestPathClosed,
 }
 
 impl Display for Error {
@@ -15,6 +16,7 @@ impl Display for Error {
       Error::ZBus(err) => write!(f, "ZBus error: {}", err),
       Error::ZVariant(err) => write!(f, "ZVariant error: {}", err),
       Error::EmptyUniqueName => write!(f, "The unique name is empty"),
+      Error::RequestPathClosed => write!(f, "The request path has been closed"),
     }
   }
 }

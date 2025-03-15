@@ -4,7 +4,7 @@ use zbus::Connection;
 
 /// https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.ScreenCast.xml
 
-pub struct ScreenCast {
+pub struct ScreencastPortal {
   handle_token: String,
   session_token: String,
   connection: Connection,
@@ -15,9 +15,9 @@ pub struct ScreenCast {
   restore_token: Option<String>,
 }
 
-impl ScreenCast {
-  pub fn new(handle_token: &str, session_token: &str, connection: Connection) -> Self {
-    ScreenCast {
+impl ScreencastPortal {
+  pub fn new(handle_token: &str, session_token: &str, connection: Connection) -> ScreencastPortal {
+    ScreencastPortal {
       handle_token: handle_token.to_string(),
       session_token: session_token.to_string(),
       connection,

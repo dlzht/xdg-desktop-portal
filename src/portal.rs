@@ -1,6 +1,8 @@
-use crate::screencast::ScreenCast;
+use crate::screencast::ScreencastPortal;
 use std::cell::Cell;
 use zbus::Connection;
+use crate::account::AccountPortal;
+use crate::errors::Result;
 
 pub struct Portal {
   connection: Connection,
@@ -8,9 +10,25 @@ pub struct Portal {
 }
 
 impl Portal {
-  pub fn screen_cast(&self) -> ScreenCast {
+  pub async fn new() -> Result<Portal> {
+    let connection = Connection::session().await?;
+    let portal = Portal {
+      connection,
+      last_counter: Cell::new(0),
+    };
+    Ok(portal)
+  }
+
+  pub fn screencast(&self) -> ScreencastPortal {
+    self.increase_counter();
     let token = self.last_counter.get().to_string();
-    ScreenCast::new(token.as_str(), token.as_str(), self.connection.clone())
+    ScreencastPortal::new(token.as_str(), token.as_str(), self.connection.clone())
+  }
+
+  pub async fn account(&self) -> Result<AccountPortal> {
+    self.increase_counter();
+    let token = self.last_counter.get().to_string();
+    AccountPortal::new(token.as_str(), self.connection.clone()).await
   }
 
   fn increase_counter(&self) {
