@@ -55,7 +55,9 @@ async fn main() {
 
 // Ok(AccountUserInformation { id: "dlzht", name: "", image: "file:///home/dlzht/.face" })
 ```
-![account_01](./image/account_01.jpg)
+<div align="center">
+  <img width="600" src="./image/account_01.jpg" alt="account_01.jpg">
+</div>
 
 #### 2. Background
 #### 3. Camera
