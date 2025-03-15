@@ -1,6 +1,6 @@
+use crate::screencast::ScreenCast;
 use std::cell::Cell;
 use zbus::Connection;
-use crate::screen_cast::ScreenCast;
 
 pub struct Portal {
   connection: Connection,

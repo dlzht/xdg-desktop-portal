@@ -1,9 +1,12 @@
 #![feature(cell_update)]
 
+mod account;
+mod common;
 mod errors;
-mod request;
-mod screen_cast;
 mod portal;
+mod proxy;
+mod request;
+mod screencast;
 
 pub fn add(left: u64, right: u64) -> u64 {
   left + right

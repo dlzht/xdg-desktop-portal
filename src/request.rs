@@ -1,7 +1,7 @@
 use crate::errors::{Error, Result};
-use serde::Deserialize;
+use crate::proxy::request::{ResponseStream, ZRequestProxy};
 use std::fmt::Debug;
-use zbus::{proxy, Connection, Proxy};
+use zbus::Connection;
 use zvariant::OwnedObjectPath;
 
 /// https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Request.xml
@@ -35,15 +35,4 @@ impl Request {
   pub async fn close(&self) -> Result<()> {
     self.proxy.close().await
   }
-}
-
-#[proxy(
-  interface = "org.freedesktop.portal.Request",
-  default_service = "org.freedesktop.portal.Desktop"
-)]
-pub trait ZRequest {
-  fn close(&self) -> Result<()>;
-
-  #[zbus(signal)]
-  fn response<R>(&self, response: u32, results: R) -> Result<()>;
 }
