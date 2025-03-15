@@ -3,7 +3,6 @@
 mod errors;
 mod request;
 mod screen_cast;
-mod zero;
 mod portal;
 
 pub fn add(left: u64, right: u64) -> u64 {

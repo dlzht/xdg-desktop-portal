@@ -61,13 +61,6 @@ impl ScreenCast {
   }
 
   pub async fn run(&mut self) -> Result<()> {
-    let proxy = ZScreenCastProxy::new(&self.connection).await?;
-    let mut signals = ZRequestProxy::signal_stream(&self.handle_token, &self.connection).await?;
-    let create_session_req = CreateSessionReq::new(
-      self.handle_token.as_str(),
-      self.session_token.as_str(),
-    );
-    let _ = proxy.create_session(&create_session_req).await?;
     Ok(())
   }
 }
