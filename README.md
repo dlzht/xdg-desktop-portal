@@ -5,7 +5,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 ### Features
 
 |                       | impl | example | version    | doc                                                                                                                                        | description                                                                                                                         |
-|-----------------------|---|--|------------|--------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
+|-----------------------|--|--|------------|--------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|
 | Account               | ✅ | ✅ | 1          | [Account.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Account.xml)      | query basic information about the user, like their name and avatar photo                                                            |
 | Background            | ❌ | ❌ | 2          | [Background.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Background.xml) | let application run in the background or started automatically when the user logs in                                                |
 | Camera                | ❌ | ❌ | -          | [Camera.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Camera.xml)        | access camera devices, such as web cams                                                                                             |
@@ -20,7 +20,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 | Inhibit               | ❌ | ❌ | 3          | [Inhibit.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Inhibit.xml)                                                                                                                                           | inhibit the user session from ending, suspending, idling or getting switched away                                                   |
 | Input Capture         | ❌ | ❌ | 1          | [InputCapture.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.InputCapture.xml)                                                                                                                                           | capture input events from connected physical or logical devices                                                                     |
 | Location              | ❌ | ❌ | 1          | [Location.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Location.xml)                                                                                                                                           | query basic information about the location                                                                                          |
-| Momory Monitor        | ❌ | ❌ | 1          | [MemoryMonitor.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.MemoryMonitor.xml)                                                                                                                                           | provides information about low system memory                                                                                        |
+| Momory Monitor        | ✅ | ✅ | 1          | [MemoryMonitor.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.MemoryMonitor.xml)                                                                                                                                           | provides information about low system memory                                                                                        |
 | Network Monitor       | ❌ | ❌ | 3          | [NetworkMonitor.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.NetworkMonitor.xml)                                                                                                                                           | provides network status information                                                                                                 |
 | Notification          | ❌ | ❌ | 2          | [Notification.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Notification.xml)                                                                                                                                           | send and withdraw notifications                                                                                                     |
 | OpenURI               | ❌ | ❌ | 5          | [OpenURI.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.OpenURI.xml)                                                                                                                                           | open URIs (e.g. a http: link to the applications homepage) under the control of the user                                            |
@@ -43,7 +43,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 
 #### 1. Account 
 
-__get_user_information__
+**get_user_information**
 
 ```rust
 #[tokio::main(flavor = "current_thread")]
@@ -73,6 +73,21 @@ async fn main() {
 #### 13. Input Capture
 #### 14. Location
 #### 15. Memory Monitor
+
+**low_memory_warning**
+
+```rust
+#[tokio::main(flavor = "current_thread")]
+async fn main() {
+  let portal = Portal::new().await.unwrap();
+  let mut memory_monitor_portal = portal.memory_monitor().await.unwrap();
+  tokio::spawn(async move {
+    if let Ok(level) = memory_monitor_portal.low_memory_warning().await {
+
+    }
+  });
+}
+```
 #### 16. Network Monitor
 #### 17. Notification
 #### 18. OpenURI

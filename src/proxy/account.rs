@@ -26,6 +26,10 @@ pub struct GetUserInformationRes {
   pub image: String,
 }
 
+/// Portal for obtaining information about the user
+///
+/// This simple interface lets sandboxed applications query basic
+///  information about the user, like their name and avatar photo.
 #[proxy(
   interface = "org.freedesktop.portal.Account",
   default_service = "org.freedesktop.portal.Desktop",

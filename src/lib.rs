@@ -7,3 +7,4 @@ pub mod errors;
 pub mod portal;
 pub mod request;
 pub mod screencast;
+pub mod memory_monitor;

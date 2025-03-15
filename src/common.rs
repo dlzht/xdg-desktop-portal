@@ -29,4 +29,3 @@ pub enum PersistMode {
   AsApplication = 1,
   UntilRevoked = 2,
 }
-

@@ -10,21 +10,17 @@ pub struct AccountPortal {
   connection: Connection,
   handle_token: String,
   proxy: ZAccountProxy<'static>,
-  responses: ResponseStream,
+  signals: ResponseStream,
 }
 
 impl AccountPortal {
   /// Create AccountPortal instance
   ///
-  /// `handle_token`
-  ///
-  /// A string that will be used as the last element of the @handle. Must be a valid
+  /// `handle_token`: string that will be used as the last element of the @handle. Must be a valid
   /// object path element. See the :ref:`org.freedesktop.portal.Request` documentation for
   /// more information about the @handle.
   ///
-  /// `connection`
-  ///
-  /// A Z-Bus session connection
+  /// `connection`: Z-Bus session connection
   pub async fn new(handle_token: &str, connection: Connection) -> Result<AccountPortal> {
     let responses = RequestPortal::new(handle_token, connection.clone())
       .await?
@@ -35,20 +31,16 @@ impl AccountPortal {
       connection,
       handle_token: handle_token.to_string(),
       proxy,
-      responses,
+      signals: responses,
     };
     Ok(portal)
   }
 
   /// Gets information about the user.
   ///
-  /// `window`
+  /// `window`: identifier for the window
   ///
-  /// Identifier for the window
-  ///
-  /// `reason`
-  ///
-  /// A string that can be shown in the dialog to explain why the information is
+  /// `reason`: string that can be shown in the dialog to explain why the information is
   /// needed. This should be a complete sentence that explains what the application
   /// will do with the returned information, for example: "Allows your personal
   /// information to be included with recipes you share with your friends".
@@ -60,14 +52,14 @@ impl AccountPortal {
     let req = GetUserInformationReq::new(self.handle_token.as_str(), reason);
     let window = window.unwrap_or("");
     let _ = self.proxy.get_user_information(window, &req).await?;
-    let res = self
-      .responses
+    let signal = self
+      .signals
       .next()
       .await
-      .ok_or(Error::RequestPathClosed)?
+      .ok_or(Error::SignalStreamClosed)?
       .args::<GetUserInformationRes>()?
       .results;
-    Ok(AccountUserInformation::from(res))
+    Ok(AccountUserInformation::from(signal))
   }
 }
 
