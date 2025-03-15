@@ -1,0 +1,42 @@
+use std::fmt::{Display, Formatter};
+
+pub type Result<T> = std::result::Result<T, Error>;
+
+#[derive(Debug)]
+pub enum Error {
+  ZBus(zbus::Error),
+  ZVariant(zvariant::Error),
+  EmptyUniqueName,
+}
+
+impl Display for Error {
+  fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+    match self {
+      Error::ZBus(err) => write!(f, "ZBus error: {}", err),
+      Error::ZVariant(err) => write!(f, "ZVariant error: {}", err),
+      Error::EmptyUniqueName => write!(f, "The unique name is empty"),
+    }
+  }
+}
+
+impl std::error::Error for Error {
+  fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
+    match self {
+      Error::ZBus(err) => Some(err),
+      Error::ZVariant(err) => Some(err),
+      _ => None,
+    }
+  }
+}
+
+impl From<zbus::Error> for Error {
+  fn from(value: zbus::Error) -> Error {
+    Error::ZBus(value)
+  }
+}
+
+impl From<zvariant::Error> for Error {
+  fn from(value: zvariant::Error) -> Error {
+    Error::ZVariant(value)
+  }
+}
