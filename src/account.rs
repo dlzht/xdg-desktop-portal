@@ -1,5 +1,5 @@
 use crate::errors::{Error, Result};
-use crate::proxy::account::{GetUserInformationReq, GetUserInformationRes, ZAccountProxy};
+use crate::proxy::account::{ZGetUserInfoReq, ZGetUserInfoRes, ZAccountProxy};
 use crate::proxy::request::ResponseStream;
 use crate::request::RequestPortal;
 use zbus::export::ordered_stream::OrderedStreamExt;
@@ -46,26 +46,46 @@ impl AccountPortal {
   /// information to be included with recipes you share with your friends".
   pub async fn get_user_information(
     &mut self,
-    window: Option<&str>,
-    reason: Option<&str>,
-  ) -> Result<AccountUserInformation> {
-    let req = GetUserInformationReq::new(self.handle_token.as_str(), reason);
-    let window = window.unwrap_or("");
-    let _ = self.proxy.get_user_information(window, &req).await?;
+    req: GetUserInfoReq,
+  ) -> Result<GetUserInfoRes> {
+    let GetUserInfoReq {window, reason} = req;
+    let req = ZGetUserInfoReq::new(self.handle_token.as_str(), reason.as_deref());
+    let _ = self.proxy.get_user_information(window.as_deref().unwrap_or(""), &req).await?;
     let signal = self
       .signals
       .next()
       .await
       .ok_or(Error::SignalStreamClosed)?
-      .args::<GetUserInformationRes>()?
+      .args::<ZGetUserInfoRes>()?
       .results;
-    Ok(AccountUserInformation::from(signal))
+    Ok(GetUserInfoRes::from(signal))
+  }
+}
+
+/// request of [`AccountPortal::get_user_information`]
+#[derive(Default, Debug)]
+pub struct GetUserInfoReq {
+  pub(crate) window: Option<String>,
+  pub(crate) reason: Option<String>,
+}
+
+impl GetUserInfoReq {
+  /// set field window
+  pub fn window(mut self, window: &str) -> Self {
+    self.window = Some(window.to_string());
+    self
+  }
+
+  /// set field reason
+  pub fn reason(mut self, reason: &str) -> Self {
+    self.reason = Some(reason.to_string());
+    self
   }
 }
 
 /// response of [`AccountPortal::get_user_information`]
 #[derive(Debug)]
-pub struct AccountUserInformation {
+pub struct GetUserInfoRes {
   /// the user id
   pub id: String,
 
@@ -76,9 +96,9 @@ pub struct AccountUserInformation {
   pub image: String,
 }
 
-impl From<GetUserInformationRes> for AccountUserInformation {
-  fn from(value: GetUserInformationRes) -> Self {
-    let GetUserInformationRes { id, name, image } = value;
-    AccountUserInformation { id, name, image }
+impl From<ZGetUserInfoRes> for GetUserInfoRes {
+  fn from(value: ZGetUserInfoRes) -> Self {
+    let ZGetUserInfoRes { id, name, image } = value;
+    GetUserInfoRes { id, name, image }
   }
 }

@@ -4,14 +4,14 @@ use crate::errors::Result;
 
 #[derive(SerializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
-pub struct GetUserInformationReq {
+pub struct ZGetUserInfoReq {
   handle_token: String,
   reason: Option<String>,
 }
 
-impl GetUserInformationReq {
-  pub fn new(handle_token: &str, reason: Option<&str>) -> GetUserInformationReq {
-    GetUserInformationReq {
+impl ZGetUserInfoReq {
+  pub fn new(handle_token: &str, reason: Option<&str>) -> ZGetUserInfoReq {
+    ZGetUserInfoReq {
       handle_token: handle_token.to_string(),
       reason: reason.map(|x| x.to_string()),
     }
@@ -20,7 +20,7 @@ impl GetUserInformationReq {
 
 #[derive(DeserializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
-pub struct GetUserInformationRes {
+pub struct ZGetUserInfoRes {
   pub id: String,
   pub name: String,
   pub image: String,
@@ -43,6 +43,6 @@ pub trait ZAccount {
   fn get_user_information(
     &self,
     window: &str,
-    options: &GetUserInformationReq,
+    options: &ZGetUserInfoReq,
   ) -> Result<OwnedObjectPath>;
 }
