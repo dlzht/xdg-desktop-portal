@@ -12,7 +12,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 | Clipboard             | ❌ | ❌ | -          | [Clipboard.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Clipboard.xml)  | access system clipboard                                                                                                             |
 | Document              | ❌ | ❌ | 5          | [Documents.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Documents.xml)                                                                                                                                           | make files from the outside world available to sandboxed applications in a controlled way                                           |
 | Launcher              | ❌ | ❌ | 1          | [DynamicLauncher.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.DynamicLauncher.xml)                                                                                                                                           | instal application launchers(.desktop files) which have an icon associated with them and which execute a command in the application |
-| Email                 | ❌ | ❌ | 4          | [Email.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Email.xml)                                                                                                                                           | request to send an email, optionally providing an address, subject, body and attachments                                            |
+| Email                 | ✅ | ✅ | 4          | [Email.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Email.xml)                                                                                                                                           | request to send an email, optionally providing an address, subject, body and attachments                                            |
 | File Chooser          | ❌ | ❌ | 4          | [FileChooser.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.FileChooser.xml)                                                                                                                                           | ask the user for access to files                                                                                                    |
 | File Transfer         | ❌ | ❌ | 1          | [FileTransfer.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.FileTransfer.xml)                                                                                                                                           | transfer files between apps                                                                                                         |
 | Game Mode             | ❌ | ❌ | 4          | [GameMode.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.GameMode.xml)                                                                                                                                           | access GameMode                                                                                                                     |
@@ -50,7 +50,9 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 async fn main() {
   let portal = Portal::new().await.unwrap();
   let mut account_portal = portal.account().await.unwrap();
-  println!("{:?}", account_portal.get_user_information(None, Some("I want to get user info")).await);
+  let req = GetUserInfoReq::default()
+    .reason("I want to get user info");
+  println!("{:?}", account_portal.get_user_information(req).await);
 }
 
 // Ok(AccountUserInformation { id: "dlzht", name: "", image: "file:///home/dlzht/.face" })
@@ -65,6 +67,22 @@ async fn main() {
 #### 5. Document
 #### 6. Launcher
 #### 7. Email
+
+```rust
+#[tokio::main(flavor = "current_thread")]
+async fn main() {
+  let portal = Portal::new().await.unwrap();
+  let email_portal = portal.email().await.unwrap();
+  let req = ComposeEmailReq::default()
+    .subject("Email Subject")
+    .body("Hello")
+    .addresses(vec!["example@github.com".to_string()]);
+  email_portal.compose_email(req).await.unwrap();
+}
+
+// mailto:example@github.com?subject=Email Subject&body=Hello
+```
+
 #### 8. File Chooser
 #### 9. File Transfer
 #### 10. Game Mode
