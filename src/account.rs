@@ -37,13 +37,6 @@ impl AccountPortal {
   }
 
   /// Gets information about the user.
-  ///
-  /// `window`: identifier for the window
-  ///
-  /// `reason`: string that can be shown in the dialog to explain why the information is
-  /// needed. This should be a complete sentence that explains what the application
-  /// will do with the returned information, for example: "Allows your personal
-  /// information to be included with recipes you share with your friends".
   pub async fn get_user_information(
     &mut self,
     req: GetUserInfoReq,
