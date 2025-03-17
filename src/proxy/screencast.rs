@@ -39,8 +39,8 @@ pub trait ZScreenCast {
 #[derive(SerializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
 pub struct ZCreateSessionReq {
-  pub(crate) handle_token: String,
-  pub(crate) session_handle_token: String,
+  handle_token: String,
+  session_handle_token: String,
 }
 
 impl ZCreateSessionReq {
@@ -55,7 +55,7 @@ impl ZCreateSessionReq {
 #[derive(DeserializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
 pub struct ZCreateSessionRes {
-  session_handle: String,
+  pub(crate) session_handle: String,
 }
 
 impl ZCreateSessionRes {

@@ -40,7 +40,8 @@ impl AccountPortal {
     req: GetUserInfoReq,
   ) -> Result<GetUserInfoRes> {
     let GetUserInfoReq {window, reason} = req;
-    let req = ZGetUserInfoReq::new(self.handle_token.as_str(), reason.as_deref());
+    let req = ZGetUserInfoReq::new(self.handle_token.as_str())
+      .reason(reason.as_deref());
     let _ = self.proxy.get_user_information(window.as_deref().unwrap_or(""), &req).await?;
     let signal = self
       .signals
@@ -49,18 +50,27 @@ impl AccountPortal {
       .ok_or(Error::SignalStreamClosed)?
       .args::<ZGetUserInfoRes>()?
       .results;
-    Ok(GetUserInfoRes::from(signal))
+    Ok(create_user_info_res(signal))
   }
 }
 
 /// request of [`AccountPortal::get_user_information`]
-#[derive(Default, Debug)]
+#[derive(Debug)]
 pub struct GetUserInfoReq {
   pub(crate) window: Option<String>,
   pub(crate) reason: Option<String>,
 }
 
 impl GetUserInfoReq {
+
+  /// create [``GetUserInfoReq] instance
+  pub fn new() -> GetUserInfoReq {
+    GetUserInfoReq {
+      window: None,
+      reason: None,
+    }
+  }
+
   /// set field window
   pub fn window(mut self, window: &str) -> Self {
     self.window = Some(window.to_string());
@@ -87,9 +97,7 @@ pub struct GetUserInfoRes {
   pub image: String,
 }
 
-impl From<ZGetUserInfoRes> for GetUserInfoRes {
-  fn from(value: ZGetUserInfoRes) -> Self {
-    let ZGetUserInfoRes { id, name, image } = value;
-    GetUserInfoRes { id, name, image }
-  }
+fn create_user_info_res(res: ZGetUserInfoRes) -> GetUserInfoRes {
+  let ZGetUserInfoRes { id, name, image } = res;
+  GetUserInfoRes { id, name, image }
 }

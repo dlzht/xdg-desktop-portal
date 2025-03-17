@@ -5,7 +5,7 @@ use xdg_desktop_portal::portal::Portal;
 async fn main() {
   let portal = Portal::new().await.unwrap();
   let mut account_portal = portal.account().await.unwrap();
-  let req = GetUserInfoReq::default()
+  let req = GetUserInfoReq::new()
     .reason("I want to get user info");
   println!("{:?}", account_portal.get_user_information(req).await);
 }
