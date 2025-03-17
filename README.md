@@ -30,7 +30,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 | Realtime              | ❌ | ❌ | 1          | [Realtime.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Realtime.xml)                                                                                                                                           | set threads to realtime                                                                                                             |
 | Remote Desktop        | ❌ | ❌ | 2          | [RemoteDesktop.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.RemoteDesktop.xml)                                                                                                                                           | create remote desktop sessions                                                                                                      |
 | Request               | ✅ | ❌ | -          | [Request.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Request.xml)                                                                                                                                           | shared request interface                                                                                                            |
-| Screencast            | ❌ | ❌ | 5          | [ScreenCast.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.ScreenCast.xml)                                                                                                                                           | create screen cast sessions                                                                                                         |
+| Screencast            | ✅ | ✅ | 5          | [ScreenCast.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.ScreenCast.xml)                                                                                                                                           | create screen cast sessions                                                                                                         |
 | Screenshot            | ❌ | ❌ | 2          | [Screenshot.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Screenshot.xml)                                                                                                                                           | request a screenshot                                                                                                                |
 | Secret                | ❌ | ❌ | 1          | [Secret.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Secret.xml)                                                                                                                                           | retrieve a per-application secret                                                                                                   |
 | Session               | ❌ | ❌ | -          | [Session.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Session.xml)                                                                                                                                           | shared session interface                                                                                                            |
@@ -116,6 +116,24 @@ async fn main() {
 #### 23. Remote Desktop
 #### 24. Request
 #### 25. Screencast
+
+```rust
+#[tokio::main(flavor = "current_thread")]
+async fn main() {
+  let portal = Portal::new().await.unwrap();
+  let mut screencast_portal = portal.screencast().await.unwrap();
+  let screencast_req = ScreencastReq::new()
+    .source_type(SourceType::Window | SourceType::Monitor);
+  let res = screencast_portal.screencast(screencast_req).await;
+  println!("screencast_portal returned: {:?}", res);
+}
+
+// screencast_portal returned: Ok(ScreencastRes { streams: [SelectedSource { node_id: 73, identifier: None, source_type: SourceType(Virtual), size: Some((1920, 1080)), position: None, mapping_id: None }], fd: OwnedFd { fd: 11 } })
+```
+<div align="center">
+  <img width="600" src="./image/screencast_01.jpg" alt="screencast_01.jpg">
+</div>
+
 #### 26. Screenshot
 #### 27. Secret
 #### 28. Session

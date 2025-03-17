@@ -759,7 +759,7 @@ dependencies = [
 name = "xdg-desktop-portal"
 version = "0.1.0"
 dependencies = [
- "enumflags2",
+ "bitflags",
  "serde",
  "serde_repr",
  "tokio",

@@ -1,31 +1,28 @@
-use enumflags2::bitflags;
-use serde_repr::{Deserialize_repr, Serialize_repr};
-use zvariant::Type;
+use bitflags::bitflags;
 
-pub struct Version(u32);
-
-#[bitflags]
-#[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Type, Debug, Copy, Clone, PartialEq, Eq)]
-pub enum CursorMode {
-  Hidden = 1,
-  Embedded = 2,
-  Metadata = 4,
+bitflags! {
+  #[derive(Debug)]
+  pub struct CursorMode: u32 {
+    const Hidden = 1;
+    const Embedded = 2;
+    const Metadata = 4;
+  }
 }
 
-#[bitflags]
-#[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Type, Debug, Copy, Clone, PartialEq, Eq)]
-pub enum SourceType {
-  Monitor = 1,
-  Window = 2,
-  Virtual = 4,
+bitflags! {
+  #[derive(Debug)]
+  pub struct SourceType: u32 {
+    const Monitor = 1;
+    const Window = 2;
+    const Virtual = 4;
+  }
 }
 
-#[repr(u32)]
-#[derive(Deserialize_repr, Serialize_repr, Type, Debug, Copy, Clone, PartialEq, Eq)]
-pub enum PersistMode {
-  DoNotPersist = 0,
-  AsApplication = 1,
-  UntilRevoked = 2,
+bitflags! {
+  #[derive(Debug)]
+  pub struct PersistMode: u32 {
+    const DoNotPersist = 0;
+    const AsApplication = 1;
+    const UntilRevoked = 2;
+  }
 }

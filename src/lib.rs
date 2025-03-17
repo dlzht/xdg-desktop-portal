@@ -1,4 +1,5 @@
 #![feature(cell_update)]
+extern crate core;
 
 mod proxy;
 pub mod account;

@@ -21,10 +21,10 @@ impl Portal {
     Ok(portal)
   }
 
-  pub fn screencast(&self) -> ScreencastPortal {
+  pub async fn screencast(&self) -> Result<ScreencastPortal> {
     self.increase_counter();
     let token = self.last_counter.get().to_string();
-    ScreencastPortal::new(token.as_str(), token.as_str(), self.connection.clone())
+    ScreencastPortal::new(token.as_str(), token.as_str(), self.connection.clone()).await
   }
 
   pub async fn account(&self) -> Result<AccountPortal> {
