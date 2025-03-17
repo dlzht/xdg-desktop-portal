@@ -27,47 +27,45 @@ impl EmailPortal {
 
   /// presents a window that lets the user compose an email.
   pub async fn compose_email(&self, req: ComposeEmailReq) -> Result<()> {
-    let req = self.trans_send_email_req(req);
+    let req = ZComposeEmailReq::new()
+      .subject(req.subject.as_deref())
+      .body(req.body.as_deref())
+      .addresses(req.addresses.as_ref())
+      .cc(req.cc.as_ref())
+      .bcc(req.bcc.as_ref())
+      .attachment_fds(req.attach.as_ref())
+      .activation_token(req.activation_token.as_deref());
     self.proxy.compose_email("", &req).await?;
     Ok(())
   }
 
-  fn trans_send_email_req(&self, req: ComposeEmailReq) -> ZComposeEmailReq {
-    let ComposeEmailReq {
-      subject,
-      body,
-      attach,
-      addresses,
-      cc,
-      bcc,
-      activation_token
-    } = req;
-    ZComposeEmailReq {
-      handle_token: Some(self.handle_token.to_string()),
-      subject,
-      body,
-      addresses: if addresses.is_empty() { None } else { Some(addresses) },
-      address: None,
-      attachment_fds: if attach.is_empty() { None } else { Some(attach) },
-      cc: if cc.is_empty() { None } else { Some(cc) },
-      bcc: if bcc.is_empty() { None } else { Some(bcc) },
-      activation_token
-    }
-  }
 }
 
-#[derive(Default, Debug)]
+#[derive(Debug)]
 pub struct ComposeEmailReq {
   pub(crate) subject: Option<String>,
   pub(crate) body: Option<String>,
-  pub(crate) attach: Vec<u32>,
-  pub(crate) addresses: Vec<String>,
-  pub(crate) cc: Vec<String>,
-  pub(crate) bcc: Vec<String>,
+  pub(crate) attach: Option<Vec<u32>>,
+  pub(crate) addresses: Option<Vec<String>>,
+  pub(crate) cc: Option<Vec<String>>,
+  pub(crate) bcc: Option<Vec<String>>,
   pub(crate) activation_token: Option<String>,
 }
 
 impl ComposeEmailReq {
+
+  pub fn new() -> Self {
+    ComposeEmailReq {
+      subject: None,
+      body: None,
+      attach: None,
+      addresses: None,
+      cc: None,
+      bcc: None,
+      activation_token: None,
+    }
+  }
+
   pub fn subject(mut self, subject: &str) -> Self {
     self.subject = Some(subject.to_string());
     self
@@ -79,22 +77,22 @@ impl ComposeEmailReq {
   }
 
   pub fn addresses(mut self, addresses: Vec<String>) -> Self {
-    self.addresses = addresses;
+    self.addresses = Some(addresses);
     self
   }
 
   pub fn attach(mut self, attach: Vec<u32>) -> Self {
-    self.attach = attach;
+    self.attach = Some(attach);
     self
   }
 
   pub fn cc(mut self, cc: Vec<String>) -> Self {
-    self.cc = cc;
+    self.cc = Some(cc);
     self
   }
 
   pub fn bcc(mut self, bcc: Vec<String>) -> Self {
-    self.bcc = bcc;
+    self.bcc = Some(bcc);
     self
   }
 
