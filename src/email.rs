@@ -2,7 +2,7 @@ use crate::errors::Result;
 use crate::proxy::email::{ZComposeEmailReq, ZEmailProxy};
 use zbus::Connection;
 
-/// Portal for sending email
+/// portal for sending email
 pub struct EmailPortal {
   connection: Connection,
   handle_token: String,
@@ -10,7 +10,7 @@ pub struct EmailPortal {
 }
 
 impl EmailPortal {
-  /// Create EmailPortal instance
+  /// create EmailPortal instance
   ///
   /// `handle_token`: string that will be used as the last element of the @handle. Must be a valid
   /// object path element. See the :ref:`org.freedesktop.portal.Request` documentation for
@@ -27,7 +27,7 @@ impl EmailPortal {
     Ok(portal)
   }
 
-  /// Presents a window that lets the user compose an email.
+  /// presents a window that lets the user compose an email.
   pub async fn compose_email(&self, req: ComposeEmailReq) -> Result<()> {
     let req = self.trans_send_email_req(req);
     self.proxy.compose_email("", &req).await?;

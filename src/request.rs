@@ -3,14 +3,14 @@ use crate::proxy::request::{ResponseStream, ZRequestProxy};
 use zbus::Connection;
 use zvariant::OwnedObjectPath;
 
-/// Shared request interface
+/// shared request interface
 pub struct RequestPortal {
   connection: Connection,
   proxy: ZRequestProxy<'static>,
 }
 
 impl RequestPortal {
-  /// Create RequestPortal instance
+  /// create RequestPortal instance
   ///
   /// `handle_token`: string that will be used as the last element of the @handle. Must be a valid
   /// object path element. See the :ref:`org.freedesktop.portal.Request` documentation for

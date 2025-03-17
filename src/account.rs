@@ -5,7 +5,7 @@ use crate::request::RequestPortal;
 use zbus::export::ordered_stream::OrderedStreamExt;
 use zbus::Connection;
 
-/// Portal for obtaining information about the user
+/// portal for obtaining information about the user
 pub struct AccountPortal {
   connection: Connection,
   handle_token: String,
@@ -14,7 +14,7 @@ pub struct AccountPortal {
 }
 
 impl AccountPortal {
-  /// Create AccountPortal instance
+  /// create AccountPortal instance
   ///
   /// `handle_token`: string that will be used as the last element of the @handle. Must be a valid
   /// object path element. See the :ref:`org.freedesktop.portal.Request` documentation for
@@ -36,7 +36,7 @@ impl AccountPortal {
     Ok(portal)
   }
 
-  /// Gets information about the user.
+  /// get information about the user.
   pub async fn get_user_information(
     &mut self,
     req: GetUserInfoReq,
