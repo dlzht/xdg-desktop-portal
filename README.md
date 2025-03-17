@@ -43,8 +43,6 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 
 #### 1. Account 
 
-**get_user_information**
-
 ```rust
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
@@ -91,8 +89,6 @@ async fn main() {
 #### 13. Input Capture
 #### 14. Location
 #### 15. Memory Monitor
-
-**low_memory_warning**
 
 ```rust
 #[tokio::main(flavor = "current_thread")]
