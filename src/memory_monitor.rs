@@ -5,7 +5,6 @@ use crate::errors::{Result, Error};
 
 /// Portal for memory monitoring
 pub struct MemoryMonitorPortal {
-  connection: Connection,
   signals: LowMemoryWaringStream,
 }
 
@@ -15,8 +14,8 @@ impl MemoryMonitorPortal {
   /// `connection`: Z-Bus session connection
   pub async fn new(connection: Connection) -> Result<MemoryMonitorPortal> {
     let proxy = ZMemoryMonitorProxy::new(&connection).await?;
-    let responses = proxy.receive_low_memory_waring().await?;
-    let portal = MemoryMonitorPortal { connection, signals: responses };
+    let signals = proxy.receive_low_memory_waring().await?;
+    let portal = MemoryMonitorPortal { signals };
     Ok(portal)
   }
 

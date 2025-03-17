@@ -7,7 +7,6 @@ use zbus::Connection;
 
 /// portal for obtaining information about the user
 pub struct AccountPortal {
-  connection: Connection,
   handle_token: String,
   proxy: ZAccountProxy<'static>,
   signals: ResponseStream,
@@ -22,13 +21,12 @@ impl AccountPortal {
   ///
   /// `connection`: Z-Bus session connection
   pub async fn new(handle_token: &str, connection: Connection) -> Result<AccountPortal> {
-    let responses = RequestPortal::new(handle_token, connection.clone())
+    let proxy = ZAccountProxy::new(&connection).await?;
+    let responses = RequestPortal::new(handle_token, connection)
       .await?
       .responses()
       .await?;
-    let proxy = ZAccountProxy::new(&connection).await?;
     let portal = AccountPortal {
-      connection,
       handle_token: handle_token.to_string(),
       proxy,
       signals: responses,

@@ -4,7 +4,6 @@ use zbus::Connection;
 
 /// portal for sending email
 pub struct EmailPortal {
-  connection: Connection,
   handle_token: String,
   proxy: ZEmailProxy<'static>,
 }
@@ -20,7 +19,6 @@ impl EmailPortal {
   pub async fn new(handle_token: &str, connection: Connection) -> Result<EmailPortal> {
     let proxy = ZEmailProxy::new(&connection).await?;
     let portal = EmailPortal {
-      connection,
       handle_token: handle_token.to_string(),
       proxy,
     };

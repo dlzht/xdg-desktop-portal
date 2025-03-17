@@ -5,7 +5,6 @@ use zvariant::OwnedObjectPath;
 
 /// shared request interface
 pub struct RequestPortal {
-  connection: Connection,
   proxy: ZRequestProxy<'static>,
 }
 
@@ -28,7 +27,7 @@ impl RequestPortal {
       .path(OwnedObjectPath::try_from(path)?)?
       .build()
       .await?;
-    Ok(RequestPortal { connection, proxy })
+    Ok(RequestPortal { proxy })
   }
 
   pub async fn responses(&self) -> Result<ResponseStream> {
