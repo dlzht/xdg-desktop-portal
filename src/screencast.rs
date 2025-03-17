@@ -10,7 +10,6 @@ use std::collections::HashMap;
 use zbus::Connection;
 use zbus::export::ordered_stream::OrderedStreamExt;
 use zvariant::OwnedFd;
-use crate::account::AccountPortal;
 
 /// https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.ScreenCast.xml
 

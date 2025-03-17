@@ -18,19 +18,19 @@ pub trait ZScreenCast {
   #[zbus(property, name = "AvailableSourceTypes")]
   fn available_source_types(&self) -> Result<u32>;
 
-  fn create_session(&self, options: &ZCreateSessionReq) -> Result<OwnedObjectPath>;
+  fn create_session(&self, options: &ZCreateSessionReq<'_>) -> Result<OwnedObjectPath>;
 
   fn select_sources(
     &self,
     session_handle: ObjectPath<'_>,
-    options: &ZSelectSourcesReq,
+    options: &ZSelectSourcesReq<'_>,
   ) -> Result<OwnedObjectPath>;
 
   fn start(
     &self,
     session_handle: ObjectPath<'_>,
     parent_window: &str,
-    options: &ZStartReq,
+    options: &ZStartReq<'_>,
   ) -> Result<OwnedObjectPath>;
 
   fn open_pipe_wire_remote(&self, session_handle: ObjectPath<'_>, options: HashMap<String, Value<'_>>) -> Result<OwnedFd>;
@@ -38,16 +38,16 @@ pub trait ZScreenCast {
 
 #[derive(SerializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
-pub struct ZCreateSessionReq {
-  handle_token: String,
-  session_handle_token: String,
+pub struct ZCreateSessionReq<'a> {
+  handle_token: &'a str,
+  session_handle_token: &'a str,
 }
 
-impl ZCreateSessionReq {
-  pub fn new(handle_token: &str, session_handle_token: &str) -> ZCreateSessionReq {
+impl<'a> ZCreateSessionReq<'a> {
+  pub fn new(handle_token: &'a str, session_handle_token: &'a str) -> ZCreateSessionReq<'a> {
     ZCreateSessionReq {
-      handle_token: handle_token.to_string(),
-      session_handle_token: session_handle_token.to_string(),
+      handle_token,
+      session_handle_token,
     }
   }
 }
@@ -55,7 +55,7 @@ impl ZCreateSessionReq {
 #[derive(DeserializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
 pub struct ZCreateSessionRes {
-  pub(crate) session_handle: String,
+  pub session_handle: String,
 }
 
 impl ZCreateSessionRes {
@@ -66,19 +66,19 @@ impl ZCreateSessionRes {
 
 #[derive(SerializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
-pub struct ZSelectSourcesReq {
-  handle_token: String,
+pub struct ZSelectSourcesReq<'a> {
+  handle_token: &'a str,
   types: Option<u32>,
   multiple: Option<bool>,
   cursor_mode: Option<u32>,
-  restore_token: Option<String>,
+  restore_token: Option<&'a str>,
   persist_mode: Option<u32>,
 }
 
-impl ZSelectSourcesReq {
-  pub fn new(handle_token: &str) -> ZSelectSourcesReq {
+impl<'a> ZSelectSourcesReq<'a> {
+  pub fn new(handle_token: &'a str) -> Self {
     ZSelectSourcesReq {
-      handle_token: handle_token.to_string(),
+      handle_token,
       types: None,
       multiple: None,
       cursor_mode: None,
@@ -87,27 +87,27 @@ impl ZSelectSourcesReq {
     }
   }
 
-  pub fn types(mut self, types: Option<u32>) -> ZSelectSourcesReq {
+  pub fn types(mut self, types: Option<u32>) -> Self {
     self.types = types;
     self
   }
 
-  pub fn multiple(mut self, multiple: Option<bool>) -> ZSelectSourcesReq {
+  pub fn multiple(mut self, multiple: Option<bool>) -> Self {
     self.multiple = multiple;
     self
   }
 
-  pub fn cursor_mode(mut self, cursor_mode: Option<u32>) -> ZSelectSourcesReq {
+  pub fn cursor_mode(mut self, cursor_mode: Option<u32>) -> Self {
     self.cursor_mode = cursor_mode;
     self
   }
 
-  pub fn restore_token(mut self, restore_token: Option<&str>) -> ZSelectSourcesReq {
-    self.restore_token = restore_token.map(|token| token.to_string());
+  pub fn restore_token(mut self, restore_token: Option<&'a str>) -> Self {
+    self.restore_token = restore_token;
     self
   }
 
-  pub fn persist_mode(mut self, persist_mode: Option<u32>) -> ZSelectSourcesReq {
+  pub fn persist_mode(mut self, persist_mode: Option<u32>) -> Self {
     self.persist_mode = persist_mode;
     self
   }
@@ -115,29 +115,29 @@ impl ZSelectSourcesReq {
 
 #[derive(SerializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
-pub struct ZStartReq {
-  handle_token: String,
+pub struct ZStartReq<'a> {
+  handle_token: &'a str,
 }
 
-impl ZStartReq {
-  pub fn new(handle_token: &str) -> ZStartReq {
-    ZStartReq { handle_token: handle_token.to_string() }
+impl<'a> ZStartReq<'a> {
+  pub fn new(handle_token: &'a str) -> ZStartReq<'a> {
+    ZStartReq { handle_token }
   }
 }
 
 #[derive(DeserializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
 pub struct ZStartRes {
-  pub(crate) streams: Vec<(u32, ZStartStream)>,
-  pub(crate) restore_token: Option<String>,
+  pub streams: Vec<(u32, ZStartStream)>,
+  pub restore_token: Option<String>,
 }
 
 #[derive(DeserializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
 pub struct ZStartStream {
-  pub(crate) id: Option<String>,
-  pub(crate) position: Option<(i32, i32)>,
-  pub(crate) size: Option<(i32, i32)>,
-  pub(crate) source_type: u32,
-  pub(crate) mapping_id: Option<String>,
+  pub id: Option<String>,
+  pub position: Option<(i32, i32)>,
+  pub size: Option<(i32, i32)>,
+  pub source_type: u32,
+  pub mapping_id: Option<String>,
 }
