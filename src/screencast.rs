@@ -22,7 +22,7 @@ pub struct ScreencastPortal {
 }
 
 impl ScreencastPortal {
-  /// create AccountPortal instance
+  /// create ScreencastPortal instance
   ///
   /// `handle_token`: string that will be used as the last element of the @handle. Must be a valid
   /// object path element. See the :ref:`org.freedesktop.portal.Request` documentation for
