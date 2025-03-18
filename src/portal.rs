@@ -5,6 +5,7 @@ use crate::account::AccountPortal;
 use crate::email::EmailPortal;
 use crate::errors::Result;
 use crate::memory_monitor::MemoryMonitorPortal;
+use crate::notification::NotificationPortal;
 
 pub struct Portal {
   connection: Connection,
@@ -41,6 +42,10 @@ impl Portal {
     self.increase_counter();
     let token = self.last_counter.get().to_string();
     EmailPortal::new(token.as_str(), self.connection.clone()).await
+  }
+
+  pub async fn notification(&self) -> Result<NotificationPortal> {
+    NotificationPortal::new(self.connection.clone()).await
   }
 
   fn increase_counter(&self) {
