@@ -5,3 +5,4 @@ pub mod notification;
 pub mod request;
 pub mod screencast;
 pub mod trash;
+pub mod camera;
