@@ -1,5 +1,5 @@
-use zbus::proxy;
 use crate::errors::Result;
+use zbus::proxy;
 
 /// Memory monitoring portal
 ///
@@ -19,5 +19,4 @@ pub trait ZMemoryMonitor {
 
   #[zbus(signal)]
   fn low_memory_waring(&self, level: u8) -> Result<()>;
-
 }

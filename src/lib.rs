@@ -1,13 +1,13 @@
 #![feature(cell_update)]
 extern crate core;
 
-mod proxy;
 pub mod account;
 pub mod common;
+pub mod email;
 pub mod errors;
+pub mod memory_monitor;
+pub mod notification;
 pub mod portal;
+mod proxy;
 pub mod request;
 pub mod screencast;
-pub mod memory_monitor;
-pub mod email;
-pub mod notification;

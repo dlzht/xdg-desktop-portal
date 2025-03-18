@@ -1,7 +1,7 @@
+use crate::errors::Result;
 use std::collections::HashMap;
 use zbus::proxy;
 use zvariant::{SerializeDict, Type, Value};
-use crate::errors::Result;
 
 ///  Portal for sending notifications
 ///
@@ -89,7 +89,6 @@ impl<'a> ZSendNotificationReq<'a> {
     self
   }
 
-
   pub fn display_hit(mut self, display_hit: Option<&'a Vec<&str>>) -> Self {
     self.display_hit = display_hit;
     self
@@ -123,6 +122,4 @@ pub struct ZNotificationButton<'a> {
   // target
 }
 
-pub enum ZNotificationIcon {
-
-}
+pub enum ZNotificationIcon {}

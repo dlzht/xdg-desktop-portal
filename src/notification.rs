@@ -1,7 +1,7 @@
-use std::ops::Deref;
 use crate::common::{NotificationCategory, NotificationDisplayHit, NotificationPriority};
 use crate::errors::Result;
 use crate::proxy::notification::{ZNotificationProxy, ZSendNotificationReq};
+use std::ops::Deref;
 use zbus::Connection;
 use zvariant::Value;
 

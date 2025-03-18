@@ -1,11 +1,11 @@
-use crate::screencast::ScreencastPortal;
-use std::cell::Cell;
-use zbus::Connection;
 use crate::account::AccountPortal;
 use crate::email::EmailPortal;
 use crate::errors::Result;
 use crate::memory_monitor::MemoryMonitorPortal;
 use crate::notification::NotificationPortal;
+use crate::screencast::ScreencastPortal;
+use std::cell::Cell;
+use zbus::Connection;
 
 pub struct Portal {
   connection: Connection,

@@ -1,9 +1,9 @@
 use crate::errors::{Error, Result};
-use crate::proxy::account::{ZGetUserInfoReq, ZGetUserInfoRes, ZAccountProxy};
+use crate::proxy::account::{ZAccountProxy, ZGetUserInfoReq, ZGetUserInfoRes};
 use crate::proxy::request::ResponseStream;
 use crate::request::RequestPortal;
-use zbus::export::ordered_stream::OrderedStreamExt;
 use zbus::Connection;
+use zbus::export::ordered_stream::OrderedStreamExt;
 
 /// portal for obtaining information about the user
 pub struct AccountPortal {
@@ -35,14 +35,13 @@ impl AccountPortal {
   }
 
   /// get information about the user.
-  pub async fn get_user_information(
-    &mut self,
-    req: GetUserInfoReq,
-  ) -> Result<GetUserInfoRes> {
-    let GetUserInfoReq {window, reason} = req;
-    let req = ZGetUserInfoReq::new(self.handle_token.as_str())
-      .reason(reason.as_deref());
-    let _ = self.proxy.get_user_information(window.as_deref().unwrap_or(""), &req).await?;
+  pub async fn get_user_information(&mut self, req: GetUserInfoReq) -> Result<GetUserInfoRes> {
+    let GetUserInfoReq { window, reason } = req;
+    let req = ZGetUserInfoReq::new(self.handle_token.as_str()).reason(reason.as_deref());
+    let _ = self
+      .proxy
+      .get_user_information(window.as_deref().unwrap_or(""), &req)
+      .await?;
     let signal = self
       .signals
       .next()
@@ -62,7 +61,6 @@ pub struct GetUserInfoReq {
 }
 
 impl GetUserInfoReq {
-
   /// create [``GetUserInfoReq] instance
   pub fn new() -> GetUserInfoReq {
     GetUserInfoReq {

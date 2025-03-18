@@ -1,7 +1,7 @@
+use crate::errors::{Error, Result};
+use crate::proxy::memory_monitor::{LowMemoryWaringStream, ZMemoryMonitorProxy};
 use zbus::Connection;
 use zbus::export::ordered_stream::OrderedStreamExt;
-use crate::proxy::memory_monitor::{LowMemoryWaringStream, ZMemoryMonitorProxy};
-use crate::errors::{Result, Error};
 
 /// Portal for memory monitoring
 pub struct MemoryMonitorPortal {
@@ -31,8 +31,7 @@ impl MemoryMonitorPortal {
   ///
   /// **255**: The system will start terminating processes to reclaim memory, including background processes.
   pub async fn low_memory_warning(&mut self) -> Result<u8> {
-    let signal = self.signals.next().await
-      .ok_or(Error::SignalStreamClosed)?;
+    let signal = self.signals.next().await.ok_or(Error::SignalStreamClosed)?;
     let level = signal.args()?.level;
     Ok(level)
   }

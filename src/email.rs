@@ -38,7 +38,6 @@ impl EmailPortal {
     self.proxy.compose_email("", &req).await?;
     Ok(())
   }
-
 }
 
 #[derive(Debug)]
@@ -53,7 +52,6 @@ pub struct ComposeEmailReq {
 }
 
 impl ComposeEmailReq {
-
   pub fn new() -> Self {
     ComposeEmailReq {
       subject: None,

@@ -1,11 +1,11 @@
+use crate::errors::Result;
 use zbus::proxy;
 use zvariant::{DeserializeDict, OwnedObjectPath, SerializeDict, Type};
-use crate::errors::Result;
 
 /// Portal for obtaining information about the user
 ///
 /// This simple interface lets sandboxed applications query basic
-///  information about the user, like their name and avatar photo.
+/// information about the user, like their name and avatar photo.
 #[proxy(
   interface = "org.freedesktop.portal.Account",
   default_service = "org.freedesktop.portal.Desktop",
@@ -51,5 +51,3 @@ pub struct ZGetUserInfoRes {
   pub name: String,
   pub image: String,
 }
-
-

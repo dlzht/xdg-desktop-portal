@@ -1,5 +1,5 @@
-use std::collections::HashMap;
 use crate::errors::Result;
+use std::collections::HashMap;
 use zbus::proxy;
 use zvariant::{DeserializeDict, ObjectPath, OwnedFd, OwnedObjectPath, SerializeDict, Type, Value};
 
@@ -33,7 +33,11 @@ pub trait ZScreenCast {
     options: &ZStartReq<'_>,
   ) -> Result<OwnedObjectPath>;
 
-  fn open_pipe_wire_remote(&self, session_handle: ObjectPath<'_>, options: HashMap<String, Value<'_>>) -> Result<OwnedFd>;
+  fn open_pipe_wire_remote(
+    &self,
+    session_handle: ObjectPath<'_>,
+    options: HashMap<String, Value<'_>>,
+  ) -> Result<OwnedFd>;
 }
 
 #[derive(SerializeDict, Type, Debug)]

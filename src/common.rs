@@ -32,7 +32,7 @@ pub enum NotificationPriority {
   Low,
   Normal,
   High,
-  Urgent
+  Urgent,
 }
 
 impl From<&NotificationPriority> for &str {
@@ -41,7 +41,7 @@ impl From<&NotificationPriority> for &str {
       NotificationPriority::Low => "low",
       NotificationPriority::Normal => "normal",
       NotificationPriority::High => "high",
-      NotificationPriority::Urgent => "urgent"
+      NotificationPriority::Urgent => "urgent",
     }
   }
 }

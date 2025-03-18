@@ -1,6 +1,6 @@
+use crate::errors::Result;
 use zbus::proxy;
 use zvariant::{OwnedObjectPath, SerializeDict, Type};
-use crate::errors::Result;
 
 /// Portal for sending email
 ///
@@ -12,10 +12,12 @@ use crate::errors::Result;
   default_path = "/org/freedesktop/portal/desktop"
 )]
 pub trait ZEmail {
-
   #[zbus(name = "ComposeEmail")]
-  fn compose_email(&self, parent_window: &str, options: &ZComposeEmailReq<'_>) -> Result<OwnedObjectPath>;
-
+  fn compose_email(
+    &self,
+    parent_window: &str,
+    options: &ZComposeEmailReq<'_>,
+  ) -> Result<OwnedObjectPath>;
 }
 
 #[derive(SerializeDict, Type, Debug)]
@@ -91,5 +93,4 @@ impl<'a> ZComposeEmailReq<'a> {
     self.activation_token = activation_token;
     self
   }
-
 }

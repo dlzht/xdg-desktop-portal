@@ -101,7 +101,6 @@ impl ScreencastPortal {
   }
 }
 
-
 /// request of [`ScreencastPortal::screencast`]
 #[derive(Debug)]
 pub struct ScreencastReq {
@@ -199,5 +198,8 @@ fn create_screencast_res(fd: OwnedFd, res: ZStartRes) -> ScreencastRes {
     .into_iter()
     .map(|stream| SelectedSource::from(stream))
     .collect();
-  ScreencastRes { fd: fd.into(), streams }
+  ScreencastRes {
+    fd: fd.into(),
+    streams,
+  }
 }
