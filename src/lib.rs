@@ -11,3 +11,4 @@ pub mod portal;
 mod proxy;
 pub mod request;
 pub mod screencast;
+pub mod trash;

@@ -6,6 +6,7 @@ use crate::notification::NotificationPortal;
 use crate::screencast::ScreencastPortal;
 use std::cell::Cell;
 use zbus::Connection;
+use crate::trash::TrashPortal;
 
 pub struct Portal {
   connection: Connection,
@@ -46,6 +47,10 @@ impl Portal {
 
   pub async fn notification(&self) -> Result<NotificationPortal> {
     NotificationPortal::new(self.connection.clone()).await
+  }
+
+  pub async fn trash(&self) -> Result<TrashPortal> {
+    TrashPortal::new(self.connection.clone()).await
   }
 
   fn increase_counter(&self) {
