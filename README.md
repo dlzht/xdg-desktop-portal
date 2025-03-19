@@ -13,7 +13,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 | Document              | ❌ | ❌ | 5          | [Documents.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Documents.xml)                                                                                                                                           | make files from the outside world available to sandboxed applications in a controlled way                                           |
 | Launcher              | ❌ | ❌ | 1          | [DynamicLauncher.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.DynamicLauncher.xml)                                                                                                                                           | instal application launchers(.desktop files) which have an icon associated with them and which execute a command in the application |
 | Email                 | ✅ | ✅ | 4          | [Email.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Email.xml)                                                                                                                                           | request to send an email, optionally providing an address, subject, body and attachments                                            |
-| File Chooser          | ❌ | ❌ | 4          | [FileChooser.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.FileChooser.xml)                                                                                                                                           | ask the user for access to files                                                                                                    |
+| File Chooser          | ✅ | ✅ | 4          | [FileChooser.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.FileChooser.xml)                                                                                                                                           | ask the user for access to files                                                                                                    |
 | File Transfer         | ❌ | ❌ | 1          | [FileTransfer.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.FileTransfer.xml)                                                                                                                                           | transfer files between apps                                                                                                         |
 | Game Mode             | ❌ | ❌ | 4          | [GameMode.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.GameMode.xml)                                                                                                                                           | access GameMode                                                                                                                     |
 | Global Shortcuts      | ❌ | ❌ | 1          | [GlobalShortcuts.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.GlobalShortcuts.xml)                                                                                                                                           | create global shortcuts sessions, and register shortcuts                                                                            |
@@ -96,6 +96,79 @@ async fn main() {
 ```
 
 #### 8. File Chooser
+
+open_file
+
+```rust
+async fn open_file() {
+  let portal = Portal::new().await.unwrap();
+  let mut file_chooser_portal = portal.file_chooser().await.unwrap();
+  let filter1 = FileFilterReq::new("image-jpg".to_string(), vec!["*.jpg".to_string()]);
+  let filter2 = FileFilterReq::new("image-png".to_string(), vec!["*.png".to_string()]);
+  let filters = vec![filter1.clone(), filter2.clone()];
+  let req = OpenFileReq::new()
+    .title("This is open file title".to_string())
+    .modal(true)
+    .multiple(true)
+    .filters(filters)
+    .current_filter(filter2)
+    .accept_label("This is accept label".to_string());
+  let res = file_chooser_portal.open_file(req).await;
+  println!("{:?}", res);
+}
+
+// Ok(OpenFileRes { uris: ["file:///home/dlzht/example.png"], current_filter: Some(FileFilterRes { name: "image-png", matches: ["*.png"] }) })
+```
+
+<div align="center">
+  <img width="600" src="./image/file_chooser_01.jpg" alt="file_chooser_01.jpg">
+</div>
+
+save_file
+
+```rust
+async fn save_file() {
+  let portal = Portal::new().await.unwrap();
+  let mut file_chooser_portal = portal.file_chooser().await.unwrap();
+  let filter1 = FileFilterReq::new("image-jpg".to_string(), vec!["*.jpg".to_string()]);
+  let filter2 = FileFilterReq::new("image-png".to_string(), vec!["*.png".to_string()]);
+  let filters = vec![filter1.clone(), filter2.clone()];
+  let req = SaveFileReq::new()
+    .title("This is save file title".to_string())
+    .modal(true)
+    .filters(filters)
+    .current_filter(filter2)
+    .current_name("FILE_NAME".to_string())
+    .accept_label("This is accept label".to_string());
+  let res = file_chooser_portal.save_file(req).await;
+  println!("{:?}", res);
+}
+
+// Ok(SaveFileRes { uris: ["file:///home/dlzht/FILE_NAME.png"], current_filter: Some(FileFilterRes { name: "image-png", matches: ["*.png"] }) })
+```
+
+save_files(nothing happened on my machine KDE/WAYLAND)
+
+```rust
+async fn save_files() {
+  let portal = Portal::new().await.unwrap();
+  let mut file_chooser_portal = portal.file_chooser().await.unwrap();
+  let path_buf1 = PathBuf::from("image-jpg1");
+  let path_buf2 = PathBuf::from("image-jpg2");
+  let req = SaveFilesReq::new()
+    .title("This is save files title".to_string())
+    .modal(true)
+    .files(vec![path_buf1.clone(), path_buf2.clone()])
+    .accept_label("This is accept label".to_string());
+  let res = file_chooser_portal.save_files(req).await;
+  println!("{:?}", res);
+}
+```
+
+<div align="center">
+  <img width="600" src="./image/file_chooser_02.jpg" alt="file_chooser_02.jpg">
+</div>
+
 #### 9. File Transfer
 #### 10. Game Mode
 #### 11. Global Shortcuts
@@ -116,6 +189,7 @@ async fn main() {
   });
 }
 ```
+
 #### 16. Network Monitor
 #### 17. Notification
 

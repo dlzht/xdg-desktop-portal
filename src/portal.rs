@@ -7,6 +7,7 @@ use crate::screencast::ScreencastPortal;
 use std::cell::Cell;
 use zbus::Connection;
 use crate::camera::CameraPortal;
+use crate::file_chooser::FileChooserPortal;
 use crate::trash::TrashPortal;
 
 pub struct Portal {
@@ -58,6 +59,12 @@ impl Portal {
     self.increase_counter();
     let token = self.last_counter.get().to_string();
     CameraPortal::new(token, self.connection.clone()).await
+  }
+
+  pub async fn file_chooser(&self) -> Result<FileChooserPortal> {
+    self.increase_counter();
+    let token = self.last_counter.get().to_string();
+    FileChooserPortal::new(token, self.connection.clone()).await
   }
 
   fn increase_counter(&self) {
