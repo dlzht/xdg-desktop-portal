@@ -1,7 +1,5 @@
 use crate::errors::Result;
 use crate::proxy::camera::{ZAccessCameraReq, ZCameraProxy};
-use crate::proxy::request::{ResponseStream, ZRequestProxy};
-use crate::request::RequestPortal;
 use std::collections::HashMap;
 use zbus::Connection;
 
@@ -9,7 +7,6 @@ use zbus::Connection;
 pub struct CameraPortal {
   handle_token: String,
   proxy: ZCameraProxy<'static>,
-  signals: ResponseStream,
 }
 
 impl CameraPortal {
@@ -22,14 +19,9 @@ impl CameraPortal {
   /// `connection`: Z-Bus session connection
   pub async fn new(handle_token: String, connection: Connection) -> Result<Self> {
     let proxy = ZCameraProxy::new(&connection).await?;
-    let signals = RequestPortal::new(handle_token.as_str(), connection)
-      .await?
-      .responses()
-      .await?;
     let portal = CameraPortal {
       handle_token,
       proxy,
-      signals,
     };
     Ok(portal)
   }

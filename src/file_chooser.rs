@@ -5,7 +5,7 @@ use crate::proxy::file_chooser::{
 };
 use crate::proxy::request::ResponseStream;
 use crate::request::RequestPortal;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use zbus::Connection;
 use zbus::export::ordered_stream::OrderedStreamExt;
 
@@ -200,8 +200,8 @@ impl OpenFileReq {
 /// response of [`FileChooserPortal::open_file`]
 #[derive(Debug)]
 pub struct OpenFileRes {
-  uris: Vec<String>,
-  current_filter: Option<FileFilterRes>,
+  pub uris: Vec<String>,
+  pub current_filter: Option<FileFilterRes>,
 }
 
 impl From<ZOpenFileRes> for OpenFileRes {
@@ -296,8 +296,8 @@ impl SaveFileReq {
 /// response of [`FileChooserPortal::save_file`]
 #[derive(Debug)]
 pub struct SaveFileRes {
-  uris: Vec<String>,
-  current_filter: Option<FileFilterRes>,
+  pub uris: Vec<String>,
+  pub current_filter: Option<FileFilterRes>,
 }
 
 impl From<ZSaveFileRes> for SaveFileRes {
@@ -371,7 +371,7 @@ impl SaveFilesReq {
 /// response of [`FileChooserPortal::save_files`]
 #[derive(Debug)]
 pub struct SaveFilesRes {
-  uris: Vec<String>,
+  pub uris: Vec<String>,
 }
 
 impl From<ZSaveFilesRes> for SaveFilesRes {
@@ -406,16 +406,16 @@ impl<'a> From<&'a FileFilterReq> for ZFileFilterReq<'a> {
 
 #[derive(Debug)]
 pub struct FileFilterRes {
-  name: String,
-  matches: Vec<String>,
+  pub name: String,
+  pub matches: Vec<String>,
 }
 
 impl From<ZFileFilterRes> for FileFilterRes {
   fn from(value: ZFileFilterRes) -> Self {
     let (name, matches) = value;
-    let mut matches = matches
+    let matches = matches
       .into_iter()
-      .map(|(index, matches)| matches)
+      .map(|(_index, matches)| matches)
       .collect();
     FileFilterRes { name, matches }
   }

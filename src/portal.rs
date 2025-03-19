@@ -42,9 +42,7 @@ impl Portal {
   }
 
   pub async fn email(&self) -> Result<EmailPortal> {
-    self.increase_counter();
-    let token = self.last_counter.get().to_string();
-    EmailPortal::new(token.as_str(), self.connection.clone()).await
+    EmailPortal::new(self.connection.clone()).await
   }
 
   pub async fn notification(&self) -> Result<NotificationPortal> {
