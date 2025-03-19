@@ -1,15 +1,15 @@
-use std::collections::HashMap;
-use zbus::Connection;
-use crate::proxy::camera::{ZAccessCameraReq, ZCameraProxy};
 use crate::errors::Result;
+use crate::proxy::camera::{ZAccessCameraReq, ZCameraProxy};
 use crate::proxy::request::{ResponseStream, ZRequestProxy};
 use crate::request::RequestPortal;
+use std::collections::HashMap;
+use zbus::Connection;
 
 /// portal for obtaining information about the user
 pub struct CameraPortal {
   handle_token: String,
   proxy: ZCameraProxy<'static>,
-  signals: ResponseStream
+  signals: ResponseStream,
 }
 
 impl CameraPortal {
@@ -23,10 +23,14 @@ impl CameraPortal {
   pub async fn new(handle_token: String, connection: Connection) -> Result<Self> {
     let proxy = ZCameraProxy::new(&connection).await?;
     let signals = RequestPortal::new(handle_token.as_str(), connection)
-      .await?.responses().await?;
+      .await?
+      .responses()
+      .await?;
     let portal = CameraPortal {
       handle_token,
-      proxy, signals };
+      proxy,
+      signals,
+    };
     Ok(portal)
   }
 
@@ -42,5 +46,4 @@ impl CameraPortal {
   pub async fn is_camera_present(&self) -> Result<bool> {
     self.proxy.is_camera_present().await
   }
-
 }

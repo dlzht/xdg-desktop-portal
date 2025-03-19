@@ -1,14 +1,14 @@
 use crate::account::AccountPortal;
+use crate::camera::CameraPortal;
 use crate::email::EmailPortal;
 use crate::errors::Result;
+use crate::file_chooser::FileChooserPortal;
 use crate::memory_monitor::MemoryMonitorPortal;
 use crate::notification::NotificationPortal;
 use crate::screencast::ScreencastPortal;
+use crate::trash::TrashPortal;
 use std::cell::Cell;
 use zbus::Connection;
-use crate::camera::CameraPortal;
-use crate::file_chooser::FileChooserPortal;
-use crate::trash::TrashPortal;
 
 pub struct Portal {
   connection: Connection,

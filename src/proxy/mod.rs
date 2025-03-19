@@ -1,9 +1,9 @@
 pub mod account;
+pub mod camera;
 pub mod email;
+pub mod file_chooser;
 pub mod memory_monitor;
 pub mod notification;
 pub mod request;
 pub mod screencast;
 pub mod trash;
-pub mod camera;
-pub mod file_chooser;

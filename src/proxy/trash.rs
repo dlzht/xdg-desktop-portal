@@ -12,7 +12,5 @@ use zvariant::Fd;
   default_path = "/org/freedesktop/portal/desktop"
 )]
 pub trait ZTrash {
-
   fn trash_file(&self, fd: Fd<'_>) -> Result<u32>;
-
 }

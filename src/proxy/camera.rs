@@ -1,7 +1,7 @@
+use crate::errors::Result;
 use std::collections::HashMap;
 use zbus::proxy;
 use zvariant::{OwnedFd, OwnedObjectPath, SerializeDict, Type, Value};
-use crate::errors::Result;
 
 #[proxy(
   interface = "org.freedesktop.portal.Camera",
@@ -9,7 +9,6 @@ use crate::errors::Result;
   default_path = "/org/freedesktop/portal/desktop"
 )]
 pub trait ZCamera {
-
   fn access_camera(&self, options: &ZAccessCameraReq<'_>) -> Result<OwnedObjectPath>;
 
   fn open_pipe_wire_remote(&self, options: &HashMap<String, Value<'_>>) -> Result<OwnedFd>;

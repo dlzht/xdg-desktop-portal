@@ -1,11 +1,11 @@
-use zbus::Connection;
-use zvariant::Fd;
 use crate::errors::Result;
 use crate::proxy::trash::ZTrashProxy;
+use zbus::Connection;
+use zvariant::Fd;
 
 /// Portal for trashing files
 pub struct TrashPortal {
-  proxy: ZTrashProxy<'static>
+  proxy: ZTrashProxy<'static>,
 }
 
 impl TrashPortal {

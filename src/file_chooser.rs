@@ -1,10 +1,13 @@
-use std::path::{Path, PathBuf};
 use crate::errors::{Error, Result};
-use crate::proxy::file_chooser::{ZFileChooserProxy, ZFileFilterReq, ZFileFilterRes, ZOpenFileReq, ZOpenFileRes, ZSaveFileReq, ZSaveFileRes, ZSaveFilesReq, ZSaveFilesRes};
+use crate::proxy::file_chooser::{
+  ZFileChooserProxy, ZFileFilterReq, ZFileFilterRes, ZOpenFileReq, ZOpenFileRes, ZSaveFileReq,
+  ZSaveFileRes, ZSaveFilesReq, ZSaveFilesRes,
+};
 use crate::proxy::request::ResponseStream;
 use crate::request::RequestPortal;
-use zbus::export::ordered_stream::OrderedStreamExt;
+use std::path::{Path, PathBuf};
 use zbus::Connection;
+use zbus::export::ordered_stream::OrderedStreamExt;
 
 /// portal for choosing file
 pub struct FileChooserPortal {
@@ -31,7 +34,9 @@ impl FileChooserPortal {
   pub async fn open_file(&mut self, req: OpenFileReq) -> Result<OpenFileRes> {
     let parent_window = req.parent_window.as_deref().unwrap_or("");
     let title = req.title.as_deref().unwrap_or("");
-    let filters = req.filters.as_ref()
+    let filters = req
+      .filters
+      .as_ref()
       .map(|filters| filters.iter().map(|f| f.into()).collect());
     let req = ZOpenFileReq::new(self.handle_token.as_str())
       .accept_label(req.accept_label.as_deref())
@@ -40,7 +45,12 @@ impl FileChooserPortal {
       .directory(req.directory)
       .filters(filters.as_ref())
       .current_filters(req.current_filter.as_ref().map(ZFileFilterReq::from))
-      .current_folder(req.current_folder.as_ref().map(|f| f.as_os_str().as_encoded_bytes()));
+      .current_folder(
+        req
+          .current_folder
+          .as_ref()
+          .map(|f| f.as_os_str().as_encoded_bytes()),
+      );
     let _ = self.proxy.open_file(parent_window, title, &req).await?;
     let signal = self
       .signals
@@ -55,15 +65,27 @@ impl FileChooserPortal {
   pub async fn save_file(&mut self, req: SaveFileReq) -> Result<SaveFileRes> {
     let parent_window = req.parent_window.as_deref().unwrap_or("");
     let title = req.title.as_deref().unwrap_or("");
-    let filters = req.filters.as_ref()
+    let filters = req
+      .filters
+      .as_ref()
       .map(|filters| filters.iter().map(|f| f.into()).collect());
     let req = ZSaveFileReq::new(self.handle_token.as_str())
       .accept_label(req.accept_label.as_deref())
       .modal(req.modal)
       .filters(filters.as_ref())
       .current_filters(req.current_filter.as_ref().map(ZFileFilterReq::from))
-      .current_folder(req.current_folder.as_ref().map(|f| f.as_os_str().as_encoded_bytes()))
-      .current_file(req.current_file.as_ref().map(|f| f.as_os_str().as_encoded_bytes()))
+      .current_folder(
+        req
+          .current_folder
+          .as_ref()
+          .map(|f| f.as_os_str().as_encoded_bytes()),
+      )
+      .current_file(
+        req
+          .current_file
+          .as_ref()
+          .map(|f| f.as_os_str().as_encoded_bytes()),
+      )
       .current_name(req.current_name.as_deref());
     let _ = self.proxy.save_file(parent_window, title, &req).await?;
     let signal = self
@@ -82,7 +104,12 @@ impl FileChooserPortal {
     let req = ZSaveFilesReq::new(self.handle_token.as_str())
       .accept_label(req.accept_label.as_deref())
       .modal(req.modal)
-      .current_folder(req.current_folder.as_ref().map(|f| f.as_os_str().as_encoded_bytes()));
+      .current_folder(
+        req
+          .current_folder
+          .as_ref()
+          .map(|f| f.as_os_str().as_encoded_bytes()),
+      );
     let _ = self.proxy.save_files(parent_window, title, &req).await?;
     let signal = self
       .signals
@@ -179,9 +206,15 @@ pub struct OpenFileRes {
 
 impl From<ZOpenFileRes> for OpenFileRes {
   fn from(value: ZOpenFileRes) -> Self {
-    let ZOpenFileRes { uris, current_filter } = value;
+    let ZOpenFileRes {
+      uris,
+      current_filter,
+    } = value;
     let current_filter = current_filter.map(|f| FileFilterRes::from(f));
-    OpenFileRes { uris, current_filter }
+    OpenFileRes {
+      uris,
+      current_filter,
+    }
   }
 }
 
@@ -269,9 +302,15 @@ pub struct SaveFileRes {
 
 impl From<ZSaveFileRes> for SaveFileRes {
   fn from(value: ZSaveFileRes) -> Self {
-    let ZSaveFileRes { uris, current_filter } = value;
+    let ZSaveFileRes {
+      uris,
+      current_filter,
+    } = value;
     let current_filter = current_filter.map(|f| FileFilterRes::from(f));
-    SaveFileRes { uris, current_filter }
+    SaveFileRes {
+      uris,
+      current_filter,
+    }
   }
 }
 
@@ -327,13 +366,12 @@ impl SaveFilesReq {
     self.current_folder = Some(current_folder);
     self
   }
-
 }
 
 /// response of [`FileChooserPortal::save_files`]
 #[derive(Debug)]
 pub struct SaveFilesRes {
-  uris: Vec<String>
+  uris: Vec<String>,
 }
 
 impl From<ZSaveFilesRes> for SaveFilesRes {
@@ -342,7 +380,6 @@ impl From<ZSaveFilesRes> for SaveFilesRes {
     SaveFilesRes { uris }
   }
 }
-
 
 #[derive(Debug, Clone)]
 pub struct FileFilterReq {
@@ -376,7 +413,10 @@ pub struct FileFilterRes {
 impl From<ZFileFilterRes> for FileFilterRes {
   fn from(value: ZFileFilterRes) -> Self {
     let (name, matches) = value;
-    let mut matches = matches.into_iter().map(|(index, matches)| matches).collect();
+    let mut matches = matches
+      .into_iter()
+      .map(|(index, matches)| matches)
+      .collect();
     FileFilterRes { name, matches }
   }
 }

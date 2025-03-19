@@ -1,6 +1,6 @@
+use crate::errors::Result;
 use zbus::proxy;
 use zvariant::{DeserializeDict, OwnedObjectPath, SerializeDict, Type};
-use crate::errors::Result;
 
 /// File chooser portal
 ///
@@ -13,10 +13,24 @@ use crate::errors::Result;
   default_path = "/org/freedesktop/portal/desktop"
 )]
 pub trait ZFileChooser {
-
-  fn open_file(&self, parent_window: &str, title: &str, options: &ZOpenFileReq<'_>) -> Result<OwnedObjectPath>;
-  fn save_file(&self, parent_window: &str, title: &str, options: &ZSaveFileReq<'_>) -> Result<OwnedObjectPath>;
-  fn save_files(&self, parent_window: &str, title: &str, options: &ZSaveFilesReq<'_>) -> Result<OwnedObjectPath>;
+  fn open_file(
+    &self,
+    parent_window: &str,
+    title: &str,
+    options: &ZOpenFileReq<'_>,
+  ) -> Result<OwnedObjectPath>;
+  fn save_file(
+    &self,
+    parent_window: &str,
+    title: &str,
+    options: &ZSaveFileReq<'_>,
+  ) -> Result<OwnedObjectPath>;
+  fn save_files(
+    &self,
+    parent_window: &str,
+    title: &str,
+    options: &ZSaveFilesReq<'_>,
+  ) -> Result<OwnedObjectPath>;
 }
 
 #[derive(SerializeDict, Type, Debug)]
@@ -159,7 +173,6 @@ impl<'a> ZSaveFileReq<'a> {
     self.current_file = current_file;
     self
   }
-
 }
 
 #[derive(DeserializeDict, Type, Debug)]
@@ -212,7 +225,6 @@ impl<'a> ZSaveFilesReq<'a> {
     self
   }
 }
-
 
 #[derive(DeserializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
