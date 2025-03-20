@@ -17,9 +17,7 @@ impl EmailPortal {
   /// `connection`: Z-Bus session connection
   pub async fn new(connection: Connection) -> Result<EmailPortal> {
     let proxy = ZEmailProxy::new(&connection).await?;
-    let portal = EmailPortal {
-      proxy,
-    };
+    let portal = EmailPortal { proxy };
     Ok(portal)
   }
 

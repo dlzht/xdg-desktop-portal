@@ -7,6 +7,7 @@ pub mod common;
 pub mod email;
 pub mod errors;
 pub mod file_chooser;
+pub mod location;
 pub mod memory_monitor;
 pub mod notification;
 pub mod portal;

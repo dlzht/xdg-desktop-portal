@@ -3,6 +3,7 @@ use crate::camera::CameraPortal;
 use crate::email::EmailPortal;
 use crate::errors::Result;
 use crate::file_chooser::FileChooserPortal;
+use crate::location::LocationPortal;
 use crate::memory_monitor::MemoryMonitorPortal;
 use crate::notification::NotificationPortal;
 use crate::screencast::ScreencastPortal;
@@ -63,6 +64,12 @@ impl Portal {
     self.increase_counter();
     let token = self.last_counter.get().to_string();
     FileChooserPortal::new(token, self.connection.clone()).await
+  }
+
+  pub async fn location(&self) -> Result<LocationPortal> {
+    self.increase_counter();
+    let token = self.last_counter.get().to_string();
+    LocationPortal::new(token, self.connection.clone()).await
   }
 
   fn increase_counter(&self) {

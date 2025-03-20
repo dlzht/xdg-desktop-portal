@@ -83,7 +83,7 @@ impl<'a> From<&'a NotificationCategory> for &'a str {
   }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Copy, Clone)]
 pub enum NotificationDisplayHit {
   Transient,
   Tray,
@@ -103,5 +103,21 @@ impl From<&NotificationDisplayHit> for &str {
       NotificationDisplayHit::HideContentOnLockscreen => "hide-content-on-lockscreen",
       NotificationDisplayHit::ShowAsNew => "show-as-new",
     }
+  }
+}
+
+#[derive(Debug, Clone, Copy)]
+pub enum LocationAccuracy {
+  None = 0,
+  COUNTRY = 1,
+  CITY = 2,
+  NEIGHBORHOOD = 3,
+  STREET = 4,
+  EXACT = 5,
+}
+
+impl From<LocationAccuracy> for u32 {
+  fn from(value: LocationAccuracy) -> Self {
+    value as u32
   }
 }

@@ -761,7 +761,6 @@ version = "0.1.0"
 dependencies = [
  "bitflags",
  "serde",
- "serde_repr",
  "tokio",
  "zbus",
  "zvariant",
