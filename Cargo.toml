@@ -3,6 +3,7 @@ name = "xdg-portal"
 version = "0.1.0"
 edition = "2024"
 authors = ["dlzht"]
+description = "implement for xdg-desktop-portal"
 repository = "https://github.com/dlzht/xdg-desktop-portal"
 license = "MIT"
 keywords = ["xdp", "xdg", "screencast", "xdg-desktop-portal"]
