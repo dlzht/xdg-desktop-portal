@@ -16,3 +16,10 @@ zbus = { version = "5", default-features = false, features = ["tokio"] }
 
 [dev-dependencies]
 tokio = { version = "1" , features = [ "full" ] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "s"
+panic = "abort"
+strip = true
