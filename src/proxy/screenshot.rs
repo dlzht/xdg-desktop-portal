@@ -1,6 +1,6 @@
+use crate::errors::Result;
 use zbus::proxy;
 use zvariant::{DeserializeDict, OwnedObjectPath, SerializeDict, Type};
-use crate::errors::Result;
 
 /// Portal for taking screenshots
 ///
@@ -11,13 +11,17 @@ use crate::errors::Result;
   default_path = "/org/freedesktop/portal/desktop"
 )]
 pub trait ZScreenshot {
-
   #[zbus(property, name = "version")]
   fn version(&self) -> Result<u32>;
 
-  fn screenshot(&self, parent_window: &str, options: &ZScreenshotReq<'_>) -> Result<OwnedObjectPath>;
+  fn screenshot(
+    &self,
+    parent_window: &str,
+    options: &ZScreenshotReq<'_>,
+  ) -> Result<OwnedObjectPath>;
 
-  fn pick_color(&self, parent_window: &str, options: &ZPickColorReq<'_>) -> Result<OwnedObjectPath>;
+  fn pick_color(&self, parent_window: &str, options: &ZPickColorReq<'_>)
+  -> Result<OwnedObjectPath>;
 }
 
 #[derive(SerializeDict, Type, Debug)]
@@ -46,7 +50,6 @@ impl<'a> ZScreenshotReq<'a> {
     self.interactive = interactive;
     self
   }
-
 }
 
 #[derive(DeserializeDict, Type, Debug)]
@@ -63,12 +66,12 @@ pub struct ZPickColorReq<'a> {
 
 impl<'a> ZPickColorReq<'a> {
   pub fn new(handle_token: &'a str) -> Self {
-    ZPickColorReq {
-      handle_token,
-    }
+    ZPickColorReq { handle_token }
   }
 }
 
 #[derive(DeserializeDict, Type, Debug)]
 #[zvariant(signature = "dict")]
-pub struct ZPickColorRes { pub color: (f64, f64, f64) }
+pub struct ZPickColorRes {
+  pub color: (f64, f64, f64),
+}

@@ -1,9 +1,11 @@
+use crate::errors::{Error, Result};
+use crate::proxy::request::ResponseStream;
+use crate::proxy::screenshot::{
+  ZPickColorReq, ZPickColorRes, ZScreenshotProxy, ZScreenshotReq, ZScreenshotRes,
+};
+use crate::request::RequestPortal;
 use zbus::Connection;
 use zbus::export::ordered_stream::OrderedStreamExt;
-use crate::proxy::request::ResponseStream;
-use crate::proxy::screenshot::{ZPickColorReq, ZPickColorRes, ZScreenshotProxy, ZScreenshotReq, ZScreenshotRes};
-use crate::errors::{Result, Error};
-use crate::request::RequestPortal;
 
 pub struct ScreenshotPortal {
   handle_token: String,
@@ -28,7 +30,7 @@ impl ScreenshotPortal {
     let portal = ScreenshotPortal {
       handle_token,
       proxy,
-      signals
+      signals,
     };
     Ok(portal)
   }
@@ -40,7 +42,10 @@ impl ScreenshotPortal {
       .modal(req.modal)
       .interactive(req.interactive);
     let _ = self.proxy.screenshot(parent_window, &req).await;
-    let res = self.signals.next().await
+    let res = self
+      .signals
+      .next()
+      .await
       .ok_or(Error::SignalStreamClosed)?
       .args::<ZScreenshotRes>()?
       .results;
@@ -52,10 +57,13 @@ impl ScreenshotPortal {
     let parent_window = req.parent_window.as_deref().unwrap_or("");
     let req = ZPickColorReq::new(self.handle_token.as_str());
     let _ = self.proxy.pick_color(parent_window, &req).await;
-    let res = self.signals.next().await
-    .ok_or(Error::SignalStreamClosed)?
-    .args::<ZPickColorRes>()?
-    .results;
+    let res = self
+      .signals
+      .next()
+      .await
+      .ok_or(Error::SignalStreamClosed)?
+      .args::<ZPickColorRes>()?
+      .results;
     Ok(PickColorRes::from(res))
   }
 }
@@ -109,7 +117,9 @@ pub struct PickColorReq {
 
 impl PickColorReq {
   pub fn new() -> Self {
-    Self { parent_window: None }
+    Self {
+      parent_window: None,
+    }
   }
 
   pub fn parent_window(&mut self, parent_window: String) -> &mut Self {

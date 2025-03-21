@@ -9,9 +9,7 @@ async fn main() {
 async fn screenshot() {
   let portal = Portal::new().await.unwrap();
   let mut screenshot_portal = portal.screenshot().await.unwrap();
-  let req = ScreenshotReq::new()
-    .interactive(true)
-    .modal(false);
+  let req = ScreenshotReq::new().interactive(true).modal(false);
   let res = screenshot_portal.screenshot(req).await;
   println!("{:?}", res);
 }

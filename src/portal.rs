@@ -7,10 +7,10 @@ use crate::location::LocationPortal;
 use crate::memory_monitor::MemoryMonitorPortal;
 use crate::notification::NotificationPortal;
 use crate::screencast::ScreencastPortal;
+use crate::screenshot::ScreenshotPortal;
 use crate::trash::TrashPortal;
 use std::cell::Cell;
 use zbus::Connection;
-use crate::screenshot::ScreenshotPortal;
 
 pub struct Portal {
   connection: Connection,
