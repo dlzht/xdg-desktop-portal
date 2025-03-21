@@ -7,6 +7,7 @@ repository = "https://github.com/dlzht/xdg-desktop-portal"
 license = "MIT"
 keywords = ["xdp", "xdg", "screencast", "xdg-desktop-portal"]
 categories = ["gui", "asynchronous"]
+exclude = ["image", "xml", "example"]
 
 [dependencies]
 serde = "1.0"
