@@ -31,7 +31,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 | Remote Desktop        | ❌ | ❌ | 2          | [RemoteDesktop.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.RemoteDesktop.xml)                                                                                                                                           | create remote desktop sessions                                                                                                      |
 | Request               | ✅ | ❌ | -          | [Request.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Request.xml)                                                                                                                                           | shared request interface                                                                                                            |
 | Screencast            | ✅ | ✅ | 5          | [ScreenCast.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.ScreenCast.xml)                                                                                                                                           | create screen cast sessions                                                                                                         |
-| Screenshot            | ❌ | ❌ | 2          | [Screenshot.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Screenshot.xml)                                                                                                                                           | request a screenshot                                                                                                                |
+| Screenshot            | ✅ | ✅ | 2          | [Screenshot.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Screenshot.xml)                                                                                                                                           | request a screenshot                                                                                                                |
 | Secret                | ❌ | ❌ | 1          | [Secret.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Secret.xml)                                                                                                                                           | retrieve a per-application secret                                                                                                   |
 | Session               | ❌ | ❌ | -          | [Session.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Session.xml)                                                                                                                                           | shared session interface                                                                                                            |
 | Settings              | ❌ | ❌ | 2          | [Settings.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Settings.xml)                                                                                                                                           | provides read-only access to a small number of standardized host settings required for toolkits similar to XSettings                |
@@ -257,6 +257,38 @@ async fn main() {
 </div>
 
 #### 26. Screenshot
+
+screenshot
+
+```rust
+async fn screenshot() {
+  let portal = Portal::new().await.unwrap();
+  let mut screenshot_portal = portal.screenshot().await.unwrap();
+  let req = ScreenshotReq::new()
+    .interactive(true)
+    .modal(false);
+  let res = screenshot_portal.screenshot(req).await;
+  println!("{:?}", res);
+}
+// Ok(ScreenshotRes { uri: "file:///home/dlzht/Screenshot_20250321_121919.png" })
+```
+
+<div align="center">
+  <img width="600" src="./image/screenshot_01.jpg" alt="screenshot_01.jpg">
+</div>
+
+pick_color
+
+```rust
+async fn pick_color() {
+  let portal = Portal::new().await.unwrap();
+  let mut screenshot_portal = portal.screenshot().await.unwrap();
+  let req = PickColorReq::new();
+  let res = screenshot_portal.pick_color(req).await;
+  println!("{:?}", res);
+}
+// Ok(PickColorRes { r: 0.11764705926179886, g: 0.12156862765550613, b: 0.13333334028720856 })
+```
 #### 27. Secret
 #### 28. Session
 #### 29. Settings

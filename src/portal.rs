@@ -10,6 +10,7 @@ use crate::screencast::ScreencastPortal;
 use crate::trash::TrashPortal;
 use std::cell::Cell;
 use zbus::Connection;
+use crate::screenshot::ScreenshotPortal;
 
 pub struct Portal {
   connection: Connection,
@@ -70,6 +71,12 @@ impl Portal {
     self.increase_counter();
     let token = self.last_counter.get().to_string();
     LocationPortal::new(token, self.connection.clone()).await
+  }
+
+  pub async fn screenshot(&self) -> Result<ScreenshotPortal> {
+    self.increase_counter();
+    let token = self.last_counter.get().to_string();
+    ScreenshotPortal::new(token, self.connection.clone()).await
   }
 
   fn increase_counter(&self) {

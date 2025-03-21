@@ -15,3 +15,4 @@ mod proxy;
 pub mod request;
 pub mod screencast;
 pub mod trash;
+pub mod screenshot;
