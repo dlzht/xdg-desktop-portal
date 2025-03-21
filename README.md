@@ -1,5 +1,8 @@
-### XDG Desktop Portal
+[![Crates.io](https://img.shields.io/crates/v/xdg-portal)](https://crates.io/crates/xdg-portal)
+[![Docs.rs](https://img.shields.io/docsrs/xdg-portal)](https://docs.rs/xdg-portal)
+[![License](https://img.shields.io/github/license/dlzht/xdg-desktop-portal.svg)](https://img.shields.io/github/license/用户名/仓库名.svg)
 
+### XDG Desktop Portal
 XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks, to interact with the system in a secure and well defined way.
 
 ### Features
