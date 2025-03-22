@@ -1,6 +1,6 @@
-use xdg_desktop_portal::common::SourceType;
-use xdg_desktop_portal::portal::Portal;
-use xdg_desktop_portal::screencast::ScreencastReq;
+use xdg_portal::common::SourceType;
+use xdg_portal::portal::Portal;
+use xdg_portal::screencast::ScreencastReq;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {

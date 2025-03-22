@@ -1,5 +1,5 @@
-use xdg_desktop_portal::location::GetLocationsReq;
-use xdg_desktop_portal::portal::Portal;
+use xdg_portal::location::GetLocationsReq;
+use xdg_portal::portal::Portal;
 use zbus::export::ordered_stream::OrderedStreamExt;
 
 #[tokio::main(flavor = "current_thread")]

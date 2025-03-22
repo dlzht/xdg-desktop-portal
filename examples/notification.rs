@@ -1,7 +1,7 @@
 use std::time::Duration;
-use xdg_desktop_portal::common::NotificationPriority;
-use xdg_desktop_portal::notification::{RemoveNotificationReq, SendNotificationReq};
-use xdg_desktop_portal::portal::Portal;
+use xdg_portal::common::NotificationPriority;
+use xdg_portal::notification::{RemoveNotificationReq, SendNotificationReq};
+use xdg_portal::portal::Portal;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {

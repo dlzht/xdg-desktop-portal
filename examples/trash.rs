@@ -1,5 +1,5 @@
 use std::os::fd::AsFd;
-use xdg_desktop_portal::portal::Portal;
+use xdg_portal::portal::Portal;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {

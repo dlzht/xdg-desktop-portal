@@ -1,5 +1,5 @@
-use xdg_desktop_portal::portal::Portal;
-use xdg_desktop_portal::screenshot::{PickColorReq, ScreenshotReq};
+use xdg_portal::portal::Portal;
+use xdg_portal::screenshot::{PickColorReq, ScreenshotReq};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {

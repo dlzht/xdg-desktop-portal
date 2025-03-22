@@ -1,5 +1,5 @@
-use xdg_desktop_portal::account::GetUserInfoReq;
-use xdg_desktop_portal::portal::Portal;
+use xdg_portal::account::GetUserInfoReq;
+use xdg_portal::portal::Portal;
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
