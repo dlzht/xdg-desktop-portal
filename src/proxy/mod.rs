@@ -9,3 +9,4 @@ pub mod request;
 pub mod screencast;
 pub mod screenshot;
 pub mod trash;
+pub mod proxy_resolver;
