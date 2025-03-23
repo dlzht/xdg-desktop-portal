@@ -37,7 +37,7 @@ impl ScreencastPortal {
     handle_token: &str,
     session_token: &str,
     connection: Connection,
-  ) -> Result<ScreencastPortal> {
+  ) -> Result<Self> {
     let proxy = ZScreenCastProxy::new(&connection).await?;
     let responses = RequestPortal::new(handle_token, connection)
       .await?

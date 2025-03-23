@@ -12,7 +12,7 @@ impl TrashPortal {
   /// create TrashPortal instance
   ///
   /// `connection`: Z-Bus session connection
-  pub async fn new(connection: Connection) -> Result<TrashPortal> {
+  pub async fn new(connection: Connection) -> Result<Self> {
     let proxy = ZTrashProxy::new(&connection).await?;
     let portal = TrashPortal { proxy };
     Ok(portal)

@@ -14,7 +14,7 @@ impl NotificationPortal {
   /// create NotificationPortal instance
   ///
   /// `connection`: Z-Bus session connection
-  pub async fn new(connection: Connection) -> Result<NotificationPortal> {
+  pub async fn new(connection: Connection) -> Result<Self> {
     let proxy = ZNotificationProxy::new(&connection).await?;
     let portal = NotificationPortal { proxy };
     Ok(portal)

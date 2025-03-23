@@ -15,7 +15,7 @@ impl EmailPortal {
   /// more information about the @handle.
   ///
   /// `connection`: Z-Bus session connection
-  pub async fn new(connection: Connection) -> Result<EmailPortal> {
+  pub async fn new(connection: Connection) -> Result<Self> {
     let proxy = ZEmailProxy::new(&connection).await?;
     let portal = EmailPortal { proxy };
     Ok(portal)

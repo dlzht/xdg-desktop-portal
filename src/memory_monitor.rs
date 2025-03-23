@@ -12,7 +12,7 @@ impl MemoryMonitorPortal {
   /// Create MemoryMonitorPortal instance
   ///
   /// `connection`: Z-Bus session connection
-  pub async fn new(connection: Connection) -> Result<MemoryMonitorPortal> {
+  pub async fn new(connection: Connection) -> Result<Self> {
     let proxy = ZMemoryMonitorProxy::new(&connection).await?;
     let signals = proxy.receive_low_memory_waring().await?;
     let portal = MemoryMonitorPortal { signals };

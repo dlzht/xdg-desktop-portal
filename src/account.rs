@@ -20,7 +20,7 @@ impl AccountPortal {
   /// more information about the @handle.
   ///
   /// `connection`: Z-Bus session connection
-  pub async fn new(handle_token: &str, connection: Connection) -> Result<AccountPortal> {
+  pub async fn new(handle_token: &str, connection: Connection) -> Result<Self> {
     let proxy = ZAccountProxy::new(&connection).await?;
     let responses = RequestPortal::new(handle_token, connection)
       .await?
