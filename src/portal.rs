@@ -11,6 +11,7 @@ use crate::screenshot::ScreenshotPortal;
 use crate::trash::TrashPortal;
 use std::cell::Cell;
 use zbus::Connection;
+use crate::game_mode::GameModePortal;
 use crate::proxy_resolver::ProxyResolverPortal;
 
 pub struct Portal {
@@ -82,6 +83,10 @@ impl Portal {
 
   pub async fn proxy_resolver(&self) -> Result<ProxyResolverPortal> {
     ProxyResolverPortal::new(self.connection.clone()).await
+  }
+
+  pub async fn game_mode(&self) -> Result<GameModePortal> {
+    GameModePortal::new(self.connection.clone()).await
   }
 
   fn increase_counter(&self) {

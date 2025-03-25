@@ -16,4 +16,5 @@ pub mod request;
 pub mod screencast;
 pub mod screenshot;
 pub mod trash;
-mod proxy_resolver;
+pub mod proxy_resolver;
+pub mod game_mode;
