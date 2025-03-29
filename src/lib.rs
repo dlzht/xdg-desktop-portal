@@ -18,3 +18,4 @@ pub mod screenshot;
 pub mod trash;
 pub mod proxy_resolver;
 pub mod game_mode;
+pub mod wallpaper;

@@ -121,3 +121,20 @@ impl From<LocationAccuracy> for u32 {
     value as u32
   }
 }
+
+#[derive(Debug, Clone, Copy)]
+pub enum WallpaperLocation {
+  Background,
+  Lockscreen,
+  Both
+}
+
+impl From<&WallpaperLocation> for &str {
+  fn from(value: &WallpaperLocation) -> Self {
+    match value {
+      WallpaperLocation::Background => "background",
+      WallpaperLocation::Lockscreen => "lockscreen",
+      WallpaperLocation::Both => "both",
+    }
+  }
+}
