@@ -13,6 +13,7 @@ use std::cell::Cell;
 use zbus::Connection;
 use crate::game_mode::GameModePortal;
 use crate::proxy_resolver::ProxyResolverPortal;
+use crate::wallpaper::WallpaperPortal;
 
 pub struct Portal {
   connection: Connection,
@@ -87,6 +88,10 @@ impl Portal {
 
   pub async fn game_mode(&self) -> Result<GameModePortal> {
     GameModePortal::new(self.connection.clone()).await
+  }
+
+  pub async fn wallpaper(&self) -> Result<WallpaperPortal> {
+    WallpaperPortal::new(self.connection.clone()).await
   }
 
   fn increase_counter(&self) {

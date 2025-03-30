@@ -46,7 +46,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 | Settings              | ❌ | ❌ | 2          | [Settings.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Settings.xml)                                                                                                                                           | provides read-only access to a small number of standardized host settings required for toolkits similar to XSettings                |
 | Trash                 | ✅ | ✅ | 1          | [Trash.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Trash.xml)                                                                                                                                           | send files to the trashcan                                                                                                          |
 | Usb                   | ❌ | ❌ | 1          | [Usb.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Usb.xml)                                                                                                                                           | monitor and request access to connected USB devices                                                                                 |
-| Wallpaper             | ❌ | ❌ | 1          | [Wallpaper.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Wallpaper.xml)                                                                                                                                           | set the user’s desktop background picture                                                                                           |
+| Wallpaper             | ✅ | ✅ | 1          | [Wallpaper.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Wallpaper.xml)                                                                                                                                           | set the user’s desktop background picture                                                                                           |
 
 ### Example
 
@@ -339,3 +339,30 @@ async fn main() {
 ```
 #### 31. Usb
 #### 32. Wallpaper
+
+set_wallpaper_url
+
+```rust
+async fn set_wallpaper_url() {
+  let portal = Portal::new().await.unwrap();
+  let wallpaper_portal = portal.wallpaper().await.unwrap();
+  let req = SetWallpaperUriReq::new("example.png".to_string())
+    .show_preview(true)
+    .set_on(WallpaperLocation::Background);
+  wallpaper_portal.set_wallpaper_uri(req).await.unwrap();
+}
+```
+
+set_wallpaper_file
+
+```rust
+async fn set_wallpaper_file() {
+  let portal = Portal::new().await.unwrap();
+  let wallpaper_portal = portal.wallpaper().await.unwrap();
+  let file = std::fs::File::open("example.png").unwrap();
+  let req = SetWallpaperFileReq::new(file.as_fd())
+    .show_preview(true)
+    .set_on(WallpaperLocation::Background);
+  wallpaper_portal.set_wallpaper_file(req).await.unwrap();
+}
+```
