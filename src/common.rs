@@ -126,7 +126,7 @@ impl From<LocationAccuracy> for u32 {
 pub enum WallpaperLocation {
   Background,
   Lockscreen,
-  Both
+  Both,
 }
 
 impl From<&WallpaperLocation> for &str {

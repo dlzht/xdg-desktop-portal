@@ -1,9 +1,9 @@
+use crate::common::WallpaperLocation;
+use crate::errors::Result;
+use crate::proxy::wallpaper::{ZSetWallpaperReq, ZWallpaperProxy};
 use std::fmt::Debug;
 use std::os::fd::AsFd;
 use zbus::Connection;
-use crate::common::WallpaperLocation;
-use crate::proxy::wallpaper::{ZSetWallpaperReq, ZWallpaperProxy};
-use crate::errors::Result;
 
 /// Portal for setting the desktop's Wallpaper
 pub struct WallpaperPortal {
@@ -23,17 +23,26 @@ impl WallpaperPortal {
     let req = ZSetWallpaperReq::new()
       .show_preview(req.show_preview)
       .set_on(req.set_on.as_ref().map(|s| s.into()));
-    let _ = self.proxy.set_wallpaper_uri(parent_window, uri, req).await?;
+    let _ = self
+      .proxy
+      .set_wallpaper_uri(parent_window, uri, req)
+      .await?;
     Ok(())
   }
 
-  pub async fn set_wallpaper_file<T: AsFd + Debug>(&self, req: SetWallpaperFileReq<T>) -> Result<()> {
+  pub async fn set_wallpaper_file<T: AsFd + Debug>(
+    &self,
+    req: SetWallpaperFileReq<T>,
+  ) -> Result<()> {
     let parent_window = req.parent_window.as_deref().unwrap_or("");
     let fd = req.fd.as_fd();
     let req = ZSetWallpaperReq::new()
       .show_preview(req.show_preview)
       .set_on(req.set_on.as_ref().map(|s| s.into()));
-    let _ = self.proxy.set_wallpaper_file(parent_window, fd.into(), req).await?;
+    let _ = self
+      .proxy
+      .set_wallpaper_file(parent_window, fd.into(), req)
+      .await?;
     Ok(())
   }
 }
@@ -52,7 +61,7 @@ impl SetWallpaperUriReq {
       parent_window: None,
       show_preview: None,
       set_on: None,
-      uri
+      uri,
     }
   }
 
@@ -70,7 +79,6 @@ impl SetWallpaperUriReq {
     self.set_on = Some(set_on);
     self
   }
-
 }
 
 #[derive(Debug)]
@@ -78,7 +86,7 @@ pub struct SetWallpaperFileReq<T: AsFd + Debug> {
   parent_window: Option<String>,
   show_preview: Option<bool>,
   set_on: Option<WallpaperLocation>,
-  fd: T
+  fd: T,
 }
 
 impl<T: AsFd + Debug> SetWallpaperFileReq<T> {
@@ -88,7 +96,6 @@ impl<T: AsFd + Debug> SetWallpaperFileReq<T> {
       show_preview: None,
       set_on: None,
       fd,
-
     }
   }
 
@@ -106,7 +113,4 @@ impl<T: AsFd + Debug> SetWallpaperFileReq<T> {
     self.set_on = Some(set_on);
     self
   }
-
 }
-
-

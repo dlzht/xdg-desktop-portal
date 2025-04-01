@@ -38,13 +38,21 @@ impl GameModePortal {
     self.proxy.unregister_game_by_pid(target, requester).await
   }
 
-  pub async fn query_status_by_pid_fd<T: AsFd, U: AsFd>(&self, target: T, requester: U) -> Result<i32> {
+  pub async fn query_status_by_pid_fd<T: AsFd, U: AsFd>(
+    &self,
+    target: T,
+    requester: U,
+  ) -> Result<i32> {
     let target = target.as_fd().into();
     let requester = requester.as_fd().into();
     self.proxy.query_status_by_pid_fd(target, requester).await
   }
 
-  pub async fn register_game_by_pid_fd<T: AsFd, U: AsFd>(&self, target: T, requester: T) -> Result<i32> {
+  pub async fn register_game_by_pid_fd<T: AsFd, U: AsFd>(
+    &self,
+    target: T,
+    requester: T,
+  ) -> Result<i32> {
     let target = target.as_fd().into();
     let requester = requester.as_fd().into();
     self.proxy.register_game_by_pid_fd(target, requester).await
@@ -57,6 +65,9 @@ impl GameModePortal {
   ) -> Result<i32> {
     let target = target.as_fd().into();
     let requester = requester.as_fd().into();
-    self.proxy.unregister_game_by_pid_fd(target, requester).await
+    self
+      .proxy
+      .unregister_game_by_pid_fd(target, requester)
+      .await
   }
 }

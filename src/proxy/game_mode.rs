@@ -1,6 +1,6 @@
+use crate::errors::Result;
 use zbus::proxy;
 use zvariant::Fd;
-use crate::errors::Result;
 
 /// Portal for accessing GameMode
 #[proxy(
@@ -35,5 +35,4 @@ pub trait ZGameMode {
 
   #[zbus(name = "UnregisterGameByPIDFd<'_>")]
   fn unregister_game_by_pid_fd(&self, target: Fd<'_>, requester: Fd<'_>) -> Result<i32>;
-
 }

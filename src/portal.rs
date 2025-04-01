@@ -3,17 +3,17 @@ use crate::camera::CameraPortal;
 use crate::email::EmailPortal;
 use crate::errors::Result;
 use crate::file_chooser::FileChooserPortal;
+use crate::game_mode::GameModePortal;
 use crate::location::LocationPortal;
 use crate::memory_monitor::MemoryMonitorPortal;
 use crate::notification::NotificationPortal;
+use crate::proxy_resolver::ProxyResolverPortal;
 use crate::screencast::ScreencastPortal;
 use crate::screenshot::ScreenshotPortal;
 use crate::trash::TrashPortal;
+use crate::wallpaper::WallpaperPortal;
 use std::cell::Cell;
 use zbus::Connection;
-use crate::game_mode::GameModePortal;
-use crate::proxy_resolver::ProxyResolverPortal;
-use crate::wallpaper::WallpaperPortal;
 
 pub struct Portal {
   connection: Connection,

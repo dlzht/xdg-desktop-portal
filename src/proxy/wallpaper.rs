@@ -1,6 +1,6 @@
+use crate::errors::Result;
 use zbus::proxy;
 use zvariant::{Fd, OwnedObjectPath, SerializeDict, Type};
-use crate::errors::Result;
 
 /// Portal for setting the desktop's Wallpaper
 ///
@@ -12,13 +12,22 @@ use crate::errors::Result;
   default_path = "/org/freedesktop/portal/desktop"
 )]
 pub trait ZWallpaper {
-
   #[zbus(property, name = "version")]
   fn version(&self) -> Result<u32>;
 
-  fn set_wallpaper_uri(&self, parent_window: &str, uri: &str, options: ZSetWallpaperReq<'_>) -> Result<OwnedObjectPath>;
+  fn set_wallpaper_uri(
+    &self,
+    parent_window: &str,
+    uri: &str,
+    options: ZSetWallpaperReq<'_>,
+  ) -> Result<OwnedObjectPath>;
 
-  fn set_wallpaper_file(&self, parent_window: &str, fd: Fd<'_>, options: ZSetWallpaperReq<'_>) -> Result<()>;
+  fn set_wallpaper_file(
+    &self,
+    parent_window: &str,
+    fd: Fd<'_>,
+    options: ZSetWallpaperReq<'_>,
+  ) -> Result<()>;
 }
 
 #[derive(SerializeDict, Type, Debug)]

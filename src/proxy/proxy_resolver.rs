@@ -1,5 +1,5 @@
-use zbus::proxy;
 use crate::errors::Result;
+use zbus::proxy;
 
 /// Portal for proxy information
 ///
@@ -13,10 +13,8 @@ use crate::errors::Result;
   default_path = "/org/freedesktop/portal/desktop"
 )]
 pub trait ZProxyResolver {
-
   #[zbus(property, name = "version")]
   fn version(&self) -> Result<u32>;
 
   fn lookup(&self, uri: &str) -> Result<Vec<String>>;
-
 }

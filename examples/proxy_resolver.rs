@@ -4,7 +4,6 @@ use xdg_portal::portal::Portal;
 async fn main() {
   let portal = Portal::new().await.unwrap();
   let proxy_resolver_portal = portal.proxy_resolver().await.unwrap();
-  let res = proxy_resolver_portal.lookup("https://github.com")
-    .await;
+  let res = proxy_resolver_portal.lookup("https://github.com").await;
   println!("{:?}", res);
 }
