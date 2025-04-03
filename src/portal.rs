@@ -7,6 +7,7 @@ use crate::game_mode::GameModePortal;
 use crate::location::LocationPortal;
 use crate::memory_monitor::MemoryMonitorPortal;
 use crate::notification::NotificationPortal;
+use crate::power_profile_monitor::PowerProfileMonitorPortal;
 use crate::proxy_resolver::ProxyResolverPortal;
 use crate::screencast::ScreencastPortal;
 use crate::screenshot::ScreenshotPortal;
@@ -92,6 +93,10 @@ impl Portal {
 
   pub async fn wallpaper(&self) -> Result<WallpaperPortal> {
     WallpaperPortal::new(self.connection.clone()).await
+  }
+
+  pub async fn power_profile_monitor(&self) -> Result<PowerProfileMonitorPortal> {
+    PowerProfileMonitorPortal::new(self.connection.clone()).await
   }
 
   fn increase_counter(&self) {
