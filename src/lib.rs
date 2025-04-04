@@ -10,6 +10,7 @@ pub mod file_chooser;
 pub mod game_mode;
 pub mod location;
 pub mod memory_monitor;
+mod network_monitor;
 pub mod notification;
 pub mod portal;
 pub mod power_profile_monitor;

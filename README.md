@@ -30,7 +30,7 @@ XDG Desktop Portal allow Flatpak apps, and other desktop containment frameworks,
 | Input Capture         | ❌ | ❌ | 1          | [InputCapture.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.InputCapture.xml)                                                                                                                                           | capture input events from connected physical or logical devices                                                                     |
 | Location              | ✅ | ✅ | 1          | [Location.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Location.xml)                                                                                                                                           | query basic information about the location                                                                                          |
 | Momory Monitor        | ✅ | ✅ | 1          | [MemoryMonitor.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.MemoryMonitor.xml)                                                                                                                                           | provides information about low system memory                                                                                        |
-| Network Monitor       | ❌ | ❌ | 3          | [NetworkMonitor.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.NetworkMonitor.xml)                                                                                                                                           | provides network status information                                                                                                 |
+| Network Monitor       | ✅ | ✅ | 3          | [NetworkMonitor.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.NetworkMonitor.xml)                                                                                                                                           | provides network status information                                                                                                 |
 | Notification          | ✅ | ✅ | 2          | [Notification.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.Notification.xml)                                                                                                                                           | send and withdraw notifications                                                                                                     |
 | OpenURI               | ❌ | ❌ | 5          | [OpenURI.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.OpenURI.xml)                                                                                                                                           | open URIs (e.g. a http: link to the applications homepage) under the control of the user                                            |
 | Power Profile Monitor | ✅ | ✅ | 1          | [PowerProfileMonitor.xml](https://github.com/flatpak/xdg-desktop-portal/blob/main/data/org.freedesktop.portal.PowerProfileMonitor.xml)                                                                                                                                           | provides information about the user-selected system-wide power profile                                                              |
@@ -227,6 +227,41 @@ async fn main() {
 ```
 
 #### 16. Network Monitor
+
+```rust
+#[tokio::main(flavor = "current_thread")]
+async fn main() {
+  let portal = Portal::new().await.unwrap();
+  let network_monitor_portal = portal.network_monitor().await.unwrap();
+  let res = network_monitor_portal.get_available().await;
+  println!("available: {:?}", res);
+
+  let res = network_monitor_portal.get_metered().await;
+  println!("metered: {:?}", res);
+
+  let res = network_monitor_portal.get_connectivity().await;
+  println!("connectivity: {:?}", res);
+
+  let res = network_monitor_portal.get_connectivity().await;
+  println!("connectivity: {:?}", res);
+
+  let res = network_monitor_portal.can_reach("github.com", 443).await;
+  println!("can_reach: {:?}", res);
+
+  let mut changed = network_monitor_portal.change().await.unwrap();
+  while let Some(_signal) = changed.next().await {
+    println!("receive changed signal");
+  }
+}
+
+// available: Ok(true)
+// metered: Ok(false)
+// connectivity: Ok(FullNetwork)
+// connectivity: Ok(FullNetwork)
+// can_reach: Ok(true)
+
+```
+
 #### 17. Notification
 
 ```rust

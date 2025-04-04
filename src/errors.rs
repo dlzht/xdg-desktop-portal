@@ -8,6 +8,7 @@ pub enum Error {
   ZVariant(zvariant::Error),
   EmptyUniqueName,
   SignalStreamClosed,
+  UnknownConnectivity(u32),
 }
 
 impl Display for Error {
@@ -17,6 +18,9 @@ impl Display for Error {
       Error::ZVariant(err) => write!(f, "ZVariant error: {}", err),
       Error::EmptyUniqueName => write!(f, "The unique name is empty"),
       Error::SignalStreamClosed => write!(f, "The signal stream has been closed"),
+      Error::UnknownConnectivity(connectivity) => {
+        write!(f, "The connectivity is unknown: {}", connectivity)
+      }
     }
   }
 }

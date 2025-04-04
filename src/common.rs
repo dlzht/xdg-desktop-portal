@@ -138,3 +138,11 @@ impl From<&WallpaperLocation> for &str {
     }
   }
 }
+
+#[derive(Debug, Clone, Copy)]
+pub enum NetworkConnectivity {
+  LocalOnly = 1,
+  Limited = 2,
+  CaptivePortal = 3,
+  FullNetwork = 4,
+}

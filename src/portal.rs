@@ -6,6 +6,7 @@ use crate::file_chooser::FileChooserPortal;
 use crate::game_mode::GameModePortal;
 use crate::location::LocationPortal;
 use crate::memory_monitor::MemoryMonitorPortal;
+use crate::network_monitor::NetworkMonitorPortal;
 use crate::notification::NotificationPortal;
 use crate::power_profile_monitor::PowerProfileMonitorPortal;
 use crate::proxy_resolver::ProxyResolverPortal;
@@ -97,6 +98,10 @@ impl Portal {
 
   pub async fn power_profile_monitor(&self) -> Result<PowerProfileMonitorPortal> {
     PowerProfileMonitorPortal::new(self.connection.clone()).await
+  }
+
+  pub async fn network_monitor(&self) -> Result<NetworkMonitorPortal> {
+    NetworkMonitorPortal::new(self.connection.clone()).await
   }
 
   fn increase_counter(&self) {
